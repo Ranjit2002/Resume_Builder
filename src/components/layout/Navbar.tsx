@@ -17,6 +17,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,7 +31,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md transition-all">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo & Brand */}
@@ -72,7 +73,8 @@ export function Navbar() {
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
+            <ThemeToggle size="sm" />
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" leftIcon={<LayoutDashboard className="w-4 h-4" />}>
                 Dashboard
@@ -96,6 +98,7 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle size="sm" />
             <Link href="/dashboard/resumes/new">
               <Button variant="primary" size="sm">
                 Create

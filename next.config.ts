@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Disable Next.js dev tools indicator in the browser window */
+  devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

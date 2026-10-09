@@ -187,7 +187,7 @@ export function ExperienceForm({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Input
                   label="Location"
-                  placeholder="Austin, TX / Remote"
+                  placeholder="Bengaluru, Karnataka / Remote"
                   value={exp.location}
                   onChange={(e) => updateItem(exp.id, { location: e.target.value })}
                 />

@@ -60,7 +60,7 @@ export function ResumeTemplateDispatcher({ data, scale = 1 }: DispatcherProps) {
     <div
       id="resume-document"
       className={cn(
-        "origin-top transition-transform duration-200 bg-white rounded-md shadow-lg border border-slate-200/80 overflow-hidden print:shadow-none print:border-none print:m-0",
+        "origin-top transition-transform duration-200 bg-white rounded-md shadow-lg border border-slate-200/80 overflow-hidden print:shadow-none print:border-none print:m-0 print:w-full print:transform-none print:overflow-visible",
         fontClass,
         spacingClass
       )}

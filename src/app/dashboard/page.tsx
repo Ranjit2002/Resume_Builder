@@ -7,6 +7,7 @@ import {
   getResumes,
   getPortfolios,
   getUserProfile,
+  DEFAULT_USER_PROFILE,
   duplicateResume,
   deleteResume,
   deletePortfolio,
@@ -37,7 +38,7 @@ export default function DashboardOverviewPage() {
   const router = useRouter();
   const [resumes, setResumes] = useState<ResumeData[]>([]);
   const [portfolios, setPortfolios] = useState<PortfolioData[]>([]);
-  const [profile, setProfile] = useState(getUserProfile());
+  const [profile, setProfile] = useState(DEFAULT_USER_PROFILE);
   const [deleteModal, setDeleteModal] = useState<{
     type: "resume" | "portfolio";
     id: string;

@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Switch } from "@/components/ui/Switch";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import confetti from "canvas-confetti";
 import {
   Globe,
@@ -220,6 +221,8 @@ export function PortfolioEditor({
             </Button>
           )}
 
+          <ThemeToggle size="sm" />
+
           <Button
             variant={portfolio.isPublished ? "outline" : "primary"}
             size="sm"
@@ -322,7 +325,7 @@ export function PortfolioEditor({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input
                     label="Location / Availability Headline"
-                    placeholder="San Francisco, CA • Open to Remote"
+                    placeholder="Bengaluru, Karnataka • Open to Remote"
                     value={portfolio.location || ""}
                     onChange={(e) =>
                       handleUpdate({ ...portfolio, location: e.target.value })

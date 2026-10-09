@@ -45,14 +45,14 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
         />
         <Input
           label="Phone Number *"
-          placeholder="+1 (555) 000-0000"
+          placeholder="+91 98765 43210"
           value={data.phone || ""}
           onChange={(e) => updateField("phone", e.target.value)}
           leftIcon={<Phone className="w-4 h-4" />}
         />
         <Input
           label="Location (City, State / Remote)"
-          placeholder="San Francisco, CA"
+          placeholder="Bengaluru, Karnataka / Mumbai / Remote"
           value={data.location || ""}
           onChange={(e) => updateField("location", e.target.value)}
           leftIcon={<MapPin className="w-4 h-4" />}

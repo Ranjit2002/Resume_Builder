@@ -20,12 +20,17 @@ import {
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { cn } from "@/lib/utils/cn";
-import { getUserProfile } from "@/lib/store/storage";
+import { getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function DashboardNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const profile = getUserProfile();
+  const [profile, setProfile] = useState(DEFAULT_USER_PROFILE);
+
+  React.useEffect(() => {
+    setProfile(getUserProfile());
+  }, []);
 
   const links = [
     { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -39,22 +44,25 @@ export function DashboardNav() {
   return (
     <>
       {/* Top Mobile Bar */}
-      <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+      <header className="lg:hidden sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
             <FileText className="w-4 h-4" />
           </div>
-          <span className="font-bold text-slate-900 tracking-tight text-lg">
+          <span className="font-bold text-slate-900 dark:text-white tracking-tight text-lg">
             Career<span className="text-indigo-600">Craft</span>
           </span>
         </Link>
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 rounded-lg text-slate-600 hover:bg-slate-100"
-          aria-label="Toggle Dashboard Menu"
-        >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle size="sm" />
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-label="Toggle Dashboard Menu"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Drawer */}
@@ -119,15 +127,15 @@ export function DashboardNav() {
       )}
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 border-r border-slate-200/80 bg-white min-h-screen p-5 shrink-0 select-none">
-        {/* Brand */}
-        <div className="mb-6">
+      <aside className="hidden lg:flex flex-col w-64 border-r border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 min-h-screen p-5 shrink-0 select-none transition-colors">
+        {/* Brand & Theme */}
+        <div className="mb-6 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight text-slate-900">
+              <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">
                 Career<span className="text-indigo-600">Craft</span>
               </span>
               <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase -mt-1">
@@ -135,6 +143,7 @@ export function DashboardNav() {
               </span>
             </div>
           </Link>
+          <ThemeToggle size="sm" />
         </div>
 
         {/* Quick Actions */}
@@ -178,14 +187,14 @@ export function DashboardNav() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-150",
                   isActive
-                    ? "bg-indigo-50/80 text-indigo-700 font-semibold shadow-xs"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-indigo-50/80 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-400 font-semibold shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white"
                 )}
               >
                 <Icon
                   className={cn(
                     "w-4 h-4",
-                    isActive ? "text-indigo-600" : "text-slate-400"
+                    isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500"
                   )}
                 />
                 <span>{item.label}</span>
@@ -195,17 +204,17 @@ export function DashboardNav() {
         </div>
 
         {/* User / Plan Box */}
-        <div className="pt-4 border-t border-slate-100 space-y-3">
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center shrink-0 text-xs">
+              <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center shrink-0 text-xs">
                 {profile.fullName?.charAt(0) || "U"}
               </div>
               <div className="truncate">
-                <p className="text-xs font-semibold text-slate-900 truncate">
+                <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">
                   {profile.fullName || "User Account"}
                 </p>
-                <p className="text-[10px] text-slate-500 truncate">
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
                   {profile.subscription?.plan === "pro" ? "Pro Plan" : "Free Plan"}
                 </p>
               </div>

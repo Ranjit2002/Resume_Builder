@@ -93,7 +93,7 @@ export function EducationForm({ education, onChange }: EducationFormProps) {
                 />
                 <Input
                   label="School / University"
-                  placeholder="e.g. University of California, Berkeley"
+                  placeholder="e.g. IIT Bombay / BITS Pilani / Delhi University"
                   value={edu.institution}
                   onChange={(e) => updateItem(edu.id, { institution: e.target.value })}
                 />
@@ -102,7 +102,7 @@ export function EducationForm({ education, onChange }: EducationFormProps) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Input
                   label="Location"
-                  placeholder="Berkeley, CA"
+                  placeholder="Mumbai, Maharashtra / Bengaluru"
                   value={edu.location}
                   onChange={(e) => updateItem(edu.id, { location: e.target.value })}
                 />

@@ -77,43 +77,70 @@ body {
 
 /* A4 Print layout rules */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
   body {
     background: #ffffff !important;
     color: #000000 !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
+  /* Hide app navigation, headers, forms, panels and controls */
   .no-print,
-  nav,
-  header,
-  aside,
-  footer,
-  button,
-  .editor-sidebar {
+  .print-hidden,
+  .editor-header,
+  .editor-form-panel,
+  .zoom-controls,
+  .editor-sidebar,
+  nav:not(#resume-document nav),
+  header.editor-header,
+  header:not(#resume-document header),
+  aside:not(#resume-document aside),
+  footer:not(#resume-document footer),
+  button {
     display: none !important;
   }
 
-  .print-container {
+  .editor-preview-panel {
+    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+    height: auto !important;
   }
 
   #resume-document {
+    display: block !important;
     box-shadow: none !important;
     border: none !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
     width: 100% !important;
-    min-height: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    transform: none !important;
     page-break-after: avoid;
+    break-inside: avoid;
   }
 
-  @page {
-    size: A4 portrait;
-    margin: 0;
+  #resume-document aside {
+    display: flex !important;
+  }
+
+  #resume-document header {
+    display: block !important;
   }
 }
