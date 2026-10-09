@@ -14,11 +14,11 @@ export function ExecutiveTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#0f172a";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed max-w-[850px] mx-auto min-h-[1100px] p-8 sm:p-12 shadow-sm border border-slate-200">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-10 shadow-sm border border-slate-200 box-border">
       {/* Executive Header */}
       <header className="border-b-2 pb-6 mb-6" style={{ borderColor: accent }}>
         <div className="text-center max-w-xl mx-auto space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-slate-900">
+          <h1 className="text-3xl font-extrabold uppercase tracking-tight text-slate-900">
             {personalInfo.fullName || "Your Full Name"}
           </h1>
           <p className="text-sm font-bold tracking-widest uppercase" style={{ color: accent }}>
@@ -59,7 +59,7 @@ export function ExecutiveTemplate({ data }: TemplateProps) {
             >
               Core Executive Competencies
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-3 gap-2 text-xs">
               {skillCategories.flatMap((c) => c.skills || []).map((skill, idx) => (
                 <div key={idx} className="flex items-center gap-1.5 text-slate-800 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />

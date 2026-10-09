@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Switch } from "@/components/ui/Switch";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import confetti from "canvas-confetti";
 import {
   Globe,
@@ -220,8 +219,6 @@ export function PortfolioEditor({
               {copiedLink ? "Copied!" : "Copy URL"}
             </Button>
           )}
-
-          <ThemeToggle size="sm" />
 
           <Button
             variant={portfolio.isPublished ? "outline" : "primary"}

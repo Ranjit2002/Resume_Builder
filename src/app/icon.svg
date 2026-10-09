@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0e7ff" />
+      <stop offset="100%" stop-color="#c7d2fe" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#1e1b4b" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGrad)" />
+
+  <!-- Inner Document Outline with Shadow -->
+  <g filter="url(#shadow)">
+    <!-- Main Resume Sheet Body with Folded Top-Right Corner -->
+    <path
+      d="M 148 112 
+         L 316 112 
+         L 364 160 
+         L 364 384 
+         C 364 397.25 353.25 408 340 408 
+         L 172 408 
+         C 158.75 408 148 397.25 148 384 
+         Z"
+      fill="#ffffff"
+    />
+
+    <!-- Folded Corner Flap -->
+    <path
+      d="M 316 112 
+         L 316 150 
+         C 316 155.5 320.5 160 326 160 
+         L 364 160 
+         Z"
+      fill="url(#foldGrad)"
+    />
+  </g>
+
+  <!-- Resume Content Accent Lines -->
+  <!-- Header Avatar / Badge -->
+  <circle cx="192" cy="168" r="16" fill="#6366f1" />
+  <rect x="220" y="160" width="80" height="14" rx="7" fill="#4f46e5" />
+
+  <!-- Section 1: Summary -->
+  <rect x="180" y="214" width="152" height="10" rx="5" fill="#94a3b8" />
+  <rect x="180" y="234" width="120" height="10" rx="5" fill="#cbd5e1" />
+
+  <!-- Section 2: Experience with bullet markers -->
+  <rect x="180" y="268" width="56" height="10" rx="5" fill="#6366f1" />
+  <circle cx="186" cy="296" r="4" fill="#6366f1" />
+  <rect x="198" y="292" width="134" height="8" rx="4" fill="#94a3b8" />
+
+  <circle cx="186" cy="318" r="4" fill="#6366f1" />
+  <rect x="198" y="314" width="114" height="8" rx="4" fill="#94a3b8" />
+
+  <!-- Section 3: Skills Pill Tags -->
+  <rect x="180" y="348" width="44" height="16" rx="8" fill="#e0e7ff" />
+  <rect x="232" y="348" width="52" height="16" rx="8" fill="#e0e7ff" />
+  <rect x="292" y="348" width="40" height="16" rx="8" fill="#e0e7ff" />
+
+  <!-- Dynamic AI Spark / Craft Star (Top Right of Document) -->
+  <g transform="translate(340, 96)">
+    <circle cx="28" cy="28" r="32" fill="#ffffff" opacity="0.9" />
+    <path
+      d="M 28 6 
+         C 28 18 38 28 50 28 
+         C 38 28 28 38 28 50 
+         C 28 38 18 28 6 28 
+         C 18 28 28 18 28 6 Z"
+      fill="url(#sparkGrad)"
+    />
+  </g>
+</svg>

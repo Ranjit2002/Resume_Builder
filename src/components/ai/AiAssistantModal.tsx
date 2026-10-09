@@ -88,15 +88,15 @@ export function AiAssistantModal({
       <div className="space-y-4 pt-2">
         {/* Notice banner if simulated/provider mode */}
         {notice && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-800 text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/60 text-amber-800 dark:text-amber-300 text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
             <p className="leading-relaxed">{notice}</p>
           </div>
         )}
 
         {/* Input Textarea */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
             Original Content
           </label>
           <textarea
@@ -104,7 +104,7 @@ export function AiAssistantModal({
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Enter the draft sentence or bullet to optimize..."
-            className="w-full text-xs rounded-xl border border-slate-200 p-3 text-slate-900 focus:outline-none focus:border-indigo-500"
+            className="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-800 p-3 text-slate-900 dark:text-white bg-white dark:bg-slate-950 focus:outline-none focus:border-indigo-500 placeholder:text-slate-400 dark:placeholder:text-slate-600"
           />
         </div>
 
@@ -124,12 +124,12 @@ export function AiAssistantModal({
 
         {/* Improved Output Comparison */}
         {improvedText && (
-          <div className="space-y-3 pt-3 border-t border-slate-100 animate-in fade-in-50">
-            <label className="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-emerald-600" />
+          <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800 animate-in fade-in-50">
+            <label className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               AI Recommended Enhancement
             </label>
-            <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 text-slate-900 text-xs leading-relaxed font-medium">
+            <div className="p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/80 bg-emerald-50/40 dark:bg-emerald-950/30 text-slate-900 dark:text-slate-100 text-xs leading-relaxed font-medium">
               {improvedText}
             </div>
 
@@ -137,7 +137,7 @@ export function AiAssistantModal({
               <button
                 type="button"
                 onClick={() => setInputText(improvedText)}
-                className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center gap-1 transition-colors"
               >
                 <RefreshCw className="w-3 h-3" /> Edit this draft
               </button>

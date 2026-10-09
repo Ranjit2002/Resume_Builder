@@ -10,16 +10,17 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#4f46e5";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs max-w-[850px] mx-auto min-h-[1100px] shadow-sm flex flex-col md:flex-row">
+    <div className="bg-white text-slate-900 font-sans text-xs w-full min-h-[1123px] flex flex-row box-border">
       {/* Left Sidebar Accent Rail */}
-      <aside className="w-full md:w-72 bg-slate-50 border-r border-slate-200/80 p-6 sm:p-8 shrink-0 flex flex-col justify-between">
+      <aside className="w-72 bg-slate-50 border-r border-slate-200/80 p-7 shrink-0 flex flex-col justify-between">
         <div className="space-y-6">
           {/* Avatar / Photo if enabled */}
           {settings.showPhoto && personalInfo.photoUrl && (
-            <div className="flex justify-center md:justify-start">
+            <div className="flex justify-start">
               <img
                 src={personalInfo.photoUrl}
                 alt={personalInfo.fullName}
+                crossOrigin="anonymous"
                 className="w-24 h-24 rounded-2xl object-cover border-2 shadow-sm"
                 style={{ borderColor: accent }}
               />
@@ -132,10 +133,10 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
       </aside>
 
       {/* Right Column / Body */}
-      <main className="flex-1 p-6 sm:p-8 space-y-6">
+      <main className="flex-1 p-7 space-y-6 min-w-0">
         {/* Name and Title */}
         <header className="border-b border-slate-100 pb-5">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
             {personalInfo.fullName || "Your Full Name"}
           </h1>
           {personalInfo.jobTitle && (
@@ -164,7 +165,7 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
             <div className="space-y-5">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-4 border-l-2" style={{ borderColor: accent }}>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-row items-center justify-between">
                     <div>
                       <h4 className="font-bold text-slate-900 text-xs">{exp.jobTitle}</h4>
                       <p className="text-slate-600 font-medium text-[11px]">
@@ -194,7 +195,7 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
               Key Projects
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {projects.map((proj) => (
                 <div
                   key={proj.id}

@@ -47,15 +47,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md hover:shadow-indigo-500/20 focus:ring-indigo-500",
       secondary:
-        "bg-slate-900 hover:bg-slate-800 text-white shadow-sm hover:shadow-slate-900/20 focus:ring-slate-900",
+        "bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 shadow-sm hover:shadow-slate-900/20 focus:ring-slate-900",
       outline:
-        "border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 shadow-xs focus:ring-indigo-500",
+        "border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-xs focus:ring-indigo-500",
       ghost:
-        "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 focus:ring-slate-400",
+        "text-slate-700 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-850 hover:text-slate-900 dark:hover:text-white focus:ring-slate-400",
       danger:
         "bg-rose-600 hover:bg-rose-700 text-white shadow-sm hover:shadow-rose-500/20 focus:ring-rose-500",
       subtle:
-        "bg-indigo-50 hover:bg-indigo-100 text-indigo-700 focus:ring-indigo-500",
+        "bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 focus:ring-indigo-500",
     };
 
     return (

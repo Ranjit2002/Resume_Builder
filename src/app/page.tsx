@@ -55,31 +55,31 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-500 selection:text-white transition-colors duration-200">
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
         {/* Subtle background glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-indigo-400/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-indigo-400/10 dark:bg-indigo-500/15 blur-[130px] rounded-full pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           {/* Top Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60 shadow-xs mb-6 animate-in fade-in slide-in-from-bottom-2">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60 shadow-xs mb-6 animate-in fade-in slide-in-from-bottom-2">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>Next-Gen Career Launchpad for 2026</span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
             Build Your Resume. <br />
-            <span className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 dark:from-indigo-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">
               Showcase Your Potential.
             </span>
           </h1>
 
           {/* Subheadline */}
-          <p className="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Create a professional, ATS-friendly resume and a stunning personal portfolio website in minutes. No design or coding skills required.
           </p>
 
@@ -100,8 +100,8 @@ export default function LandingPage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto px-6 bg-white hover:bg-slate-50"
-                leftIcon={<Layers className="w-4 h-4 text-slate-500" />}
+                className="w-full sm:w-auto px-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800"
+                leftIcon={<Layers className="w-4 h-4 text-slate-500 dark:text-slate-400" />}
               >
                 Explore Templates
               </Button>
@@ -109,7 +109,7 @@ export default function LandingPage() {
           </div>
 
           {/* Trust Indicators */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-medium text-slate-500">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-medium text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Real-Time Live Editing</span>
@@ -130,13 +130,13 @@ export default function LandingPage() {
 
           {/* Hero Visual Preview Card */}
           <div className="mt-14 max-w-5xl mx-auto">
-            <div className="rounded-3xl border border-slate-200 bg-white p-3 sm:p-5 shadow-2xl shadow-indigo-500/10">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-5 shadow-2xl shadow-indigo-500/10">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-rose-400" />
                   <div className="w-3 h-3 rounded-full bg-amber-400" />
                   <div className="w-3 h-3 rounded-full bg-emerald-400" />
-                  <span className="text-xs font-mono text-slate-400 ml-2">
+                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 ml-2">
                     careercraft.dev/studio
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export default function LandingPage() {
                     className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
                       activePreviewTab === "resume"
                         ? "bg-indigo-600 text-white"
-                        : "text-slate-600 hover:bg-slate-100"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
                     Resume Preview
@@ -157,7 +157,7 @@ export default function LandingPage() {
                     className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
                       activePreviewTab === "portfolio"
                         ? "bg-indigo-600 text-white"
-                        : "text-slate-600 hover:bg-slate-100"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
                     Portfolio Preview
@@ -165,7 +165,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="h-[480px] sm:h-[560px] overflow-hidden rounded-2xl bg-slate-100 border border-slate-200 relative">
+              <div className="h-[480px] sm:h-[560px] overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 relative">
                 {activePreviewTab === "resume" ? (
                   <div className="p-4 sm:p-8 transform scale-[0.68] sm:scale-[0.82] origin-top max-w-[850px] mx-auto pointer-events-none">
                     <ResumeTemplateDispatcher data={SAMPLE_RESUME} />
@@ -214,50 +214,50 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-white border-y border-slate-200/80">
+      <section className="py-20 bg-white dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
               Effortless Workflow
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">
               From blank page to dream job in 3 steps
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <div className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4">
               <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-lg shadow-md shadow-indigo-500/20">
                 1
               </div>
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Choose a Tailored Template
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Pick from 7 recruiter-tested resume formats and 4 portfolio designs suited for developers, designers, freshers, or executives.
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <div className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4">
               <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-lg shadow-md shadow-indigo-500/20">
                 2
               </div>
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Add Your Experience & AI Polish
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Fill your details in the split-screen editor. Use the AI writing assistant to rewrite bullets with strong action verbs and metrics.
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+            <div className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4">
               <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-lg shadow-md shadow-indigo-500/20">
                 3
               </div>
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Download PDF & Publish Online
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Export pixel-perfect A4 PDF documents ready for job portals, and publish your personal portfolio website with a single click.
               </p>
             </div>
@@ -269,10 +269,10 @@ export default function LandingPage() {
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
               Template Showcase
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">
               Crafted for every career path
             </h2>
           </div>
@@ -287,11 +287,11 @@ export default function LandingPage() {
           {RESUME_TEMPLATES.slice(0, 6).map((tmpl) => (
             <div
               key={tmpl.id}
-              className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+              className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-slate-400">
+                  <span className="text-xs font-mono font-bold text-slate-400 dark:text-slate-500">
                     {tmpl.category}
                   </span>
                   {tmpl.isPro ? (
@@ -300,24 +300,24 @@ export default function LandingPage() {
                     <Badge variant="default" size="sm">FREE</Badge>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">{tmpl.name}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{tmpl.name}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                   {tmpl.description}
                 </p>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-6 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   {tmpl.accentColors.map((c, i) => (
                     <span
                       key={i}
-                      className="w-3.5 h-3.5 rounded-full border border-slate-200"
+                      className="w-3.5 h-3.5 rounded-full border border-slate-200 dark:border-slate-700"
                       style={{ backgroundColor: c }}
                     />
                   ))}
                 </div>
                 <Link href={`/dashboard/resumes/new?template=${tmpl.id}`}>
-                  <span className="text-xs font-bold text-indigo-600 hover:underline">
+                  <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
                     Use Template →
                   </span>
                 </Link>
@@ -328,13 +328,13 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Comparison Preview */}
-      <section className="py-20 bg-white border-t border-slate-200/80">
+      <section className="py-20 bg-white dark:bg-slate-900/40 border-t border-slate-200/80 dark:border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
               Simple, Transparent Pricing
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">
               Start free, upgrade as you grow
             </h2>
           </div>
@@ -345,28 +345,28 @@ export default function LandingPage() {
                 key={plan.id}
                 className={`p-8 rounded-3xl border flex flex-col justify-between ${
                   plan.popular
-                    ? "border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/40 to-white shadow-xl relative"
-                    : "border-slate-200 bg-white shadow-sm"
+                    ? "border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/40 to-white dark:from-indigo-950/30 dark:to-slate-900 shadow-xl relative"
+                    : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-black text-slate-900">{plan.name}</h3>
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white">{plan.name}</h3>
                     {plan.popular && <Badge variant="pro" size="sm">MOST POPULAR</Badge>}
                   </div>
-                  <p className="text-xs text-slate-500 mb-6">{plan.tagline}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">{plan.tagline}</p>
 
                   <div className="mb-6">
-                    <span className="text-4xl font-black text-slate-900">
+                    <span className="text-4xl font-black text-slate-900 dark:text-white">
                       ${plan.priceMonthly}
                     </span>
-                    <span className="text-xs text-slate-500 font-medium"> / month</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium"> / month</span>
                   </div>
 
-                  <ul className="space-y-3 text-xs text-slate-700 mb-8">
+                  <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300 mb-8">
                     {plan.features.map((feat, idx) => (
                       <li key={idx} className="flex items-center gap-2.5">
-                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -391,10 +391,10 @@ export default function LandingPage() {
       {/* Frequently Asked Questions */}
       <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
             Got Questions?
           </span>
-          <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
+          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
             Frequently Asked Questions
           </h2>
         </div>
@@ -405,12 +405,12 @@ export default function LandingPage() {
             return (
               <div
                 key={idx}
-                className="border border-slate-200 rounded-2xl bg-white overflow-hidden shadow-2xs"
+                className="border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden shadow-2xs"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-slate-900"
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-slate-900 dark:text-white"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
@@ -420,7 +420,7 @@ export default function LandingPage() {
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 pt-0 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                  <div className="px-5 pb-5 pt-0 text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
                     {faq.a}
                   </div>
                 )}

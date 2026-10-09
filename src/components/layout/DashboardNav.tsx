@@ -21,7 +21,6 @@ import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { cn } from "@/lib/utils/cn";
 import { getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function DashboardNav() {
   const pathname = usePathname();
@@ -53,35 +52,32 @@ export function DashboardNav() {
             Career<span className="text-indigo-600">Craft</span>
           </span>
         </Link>
-        <div className="flex items-center gap-2">
-          <ThemeToggle size="sm" />
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-            aria-label="Toggle Dashboard Menu"
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+          aria-label="Toggle Dashboard Menu"
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </header>
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex">
-          <div className="w-72 bg-white h-full p-5 flex flex-col justify-between shadow-xl">
+        <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex">
+          <div className="w-72 bg-white dark:bg-slate-900 h-full p-5 flex flex-col justify-between shadow-xl border-r border-slate-200 dark:border-slate-800">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <Link href="/dashboard" className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
                     <FileText className="w-4 h-4" />
                   </div>
-                  <span className="font-bold text-slate-900 tracking-tight text-lg">
-                    Career<span className="text-indigo-600">Craft</span>
+                  <span className="font-bold text-slate-900 dark:text-white tracking-tight text-lg">
+                    Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
                   </span>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-1 rounded-md text-slate-400 hover:text-slate-600"
+                  className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -99,8 +95,8 @@ export function DashboardNav() {
                       className={cn(
                         "flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-indigo-50 text-indigo-700 font-semibold"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                          ? "bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-400 font-semibold"
+                          : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                       )}
                     >
                       <Icon className="w-4 h-4" />
@@ -111,13 +107,13 @@ export function DashboardNav() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 space-y-3">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
               <Link href="/dashboard/resumes/new" onClick={() => setMobileOpen(false)}>
                 <Button variant="primary" className="w-full justify-center" size="sm">
                   <Plus className="w-4 h-4 mr-1" /> New Resume
                 </Button>
               </Link>
-              <Link href="/" className="block text-center text-xs text-slate-500 hover:text-slate-700">
+              <Link href="/" className="block text-center text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                 Back to Homepage
               </Link>
             </div>
@@ -128,7 +124,7 @@ export function DashboardNav() {
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-64 border-r border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 min-h-screen p-5 shrink-0 select-none transition-colors">
-        {/* Brand & Theme */}
+        {/* Brand */}
         <div className="mb-6 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
@@ -136,14 +132,13 @@ export function DashboardNav() {
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">
-                Career<span className="text-indigo-600">Craft</span>
+                Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
               </span>
-              <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase -mt-1">
+              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 tracking-wider uppercase -mt-1">
                 Workspace
               </span>
             </div>
           </Link>
-          <ThemeToggle size="sm" />
         </div>
 
         {/* Quick Actions */}
@@ -162,8 +157,8 @@ export function DashboardNav() {
             <Button
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 text-slate-700 hover:border-indigo-300"
-              leftIcon={<Globe className="w-4 h-4 text-indigo-500" />}
+              className="w-full justify-start gap-2 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-500"
+              leftIcon={<Globe className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />}
             >
               Create Portfolio
             </Button>

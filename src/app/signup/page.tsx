@@ -52,28 +52,28 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative transition-colors duration-200">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center gap-2.5 mb-4 group">
           <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
             <FileText className="w-5 h-5 text-white" />
           </div>
-          <span className="font-extrabold text-2xl tracking-tight text-slate-900">
-            Career<span className="text-indigo-600">Craft</span>
+          <span className="font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white">
+            Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
           </span>
         </Link>
-        <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
           Create your CareerCraft account
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           Build ATS resumes and publish personal portfolio websites for free
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-xl shadow-slate-200/50 sm:rounded-3xl border border-slate-200/80 sm:px-10">
+        <div className="bg-white dark:bg-slate-900 py-8 px-6 shadow-xl shadow-slate-200/50 dark:shadow-none sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 sm:px-10">
           {errorMessage && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMessage}</span>
             </div>
@@ -110,11 +110,11 @@ export default function SignUpPage() {
               leftIcon={<Lock className="w-4 h-4" />}
             />
 
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
               By signing up, you agree to our{" "}
-              <Link href="/terms" className="text-indigo-600 underline">Terms of Service</Link>{" "}
+              <Link href="/terms" className="text-indigo-600 dark:text-indigo-400 underline">Terms of Service</Link>{" "}
               and{" "}
-              <Link href="/privacy" className="text-indigo-600 underline">Privacy Policy</Link>.
+              <Link href="/privacy" className="text-indigo-600 dark:text-indigo-400 underline">Privacy Policy</Link>.
             </p>
 
             <Button
@@ -128,9 +128,9 @@ export default function SignUpPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-slate-500">
+          <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
             Already have an account?{" "}
-            <Link href="/login" className="font-bold text-indigo-600 hover:underline">
+            <Link href="/login" className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
               Sign In
             </Link>
           </p>

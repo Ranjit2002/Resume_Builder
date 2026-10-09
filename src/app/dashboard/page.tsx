@@ -78,12 +78,12 @@ export default function DashboardOverviewPage() {
   return (
     <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-8">
       {/* Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
             Welcome back, {profile.fullName || "Builder"} 👋
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Manage your professional resumes, personal portfolio websites, and job application links.
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function DashboardOverviewPage() {
             <Button
               variant="outline"
               size="sm"
-              leftIcon={<Globe className="w-4 h-4 text-indigo-600" />}
+              leftIcon={<Globe className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
             >
               Create Portfolio
             </Button>
@@ -113,44 +113,44 @@ export default function DashboardOverviewPage() {
 
       {/* Quick Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-2">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase">
             <span>Total Resumes</span>
-            <FileText className="w-4 h-4 text-indigo-600" />
+            <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <div className="text-2xl font-black text-slate-900">{resumes.length}</div>
-          <p className="text-[11px] text-slate-400">
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{resumes.length}</div>
+          <p className="text-[11px] text-slate-400 dark:text-slate-500">
             {profile.subscription.plan === "pro" ? "Unlimited Pro Resumes" : "2 of 2 Free Resumes used"}
           </p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-2">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase">
             <span>Live Portfolios</span>
-            <Globe className="w-4 h-4 text-emerald-600" />
+            <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <div className="text-2xl font-black text-slate-900">
+          <div className="text-2xl font-black text-slate-900 dark:text-white">
             {portfolios.filter((p) => p.isPublished).length}
           </div>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-slate-400 dark:text-slate-500">
             {portfolios.length} total website projects created
           </p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-indigo-600 text-xs font-semibold uppercase">
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950/40 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/60 shadow-2xs space-y-2">
+          <div className="flex items-center justify-between text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase">
             <span>Account Plan</span>
-            <Sparkles className="w-4 h-4 text-indigo-600" />
+            <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-black text-slate-900 capitalize">
+            <span className="text-2xl font-black text-slate-900 dark:text-white capitalize">
               {profile.subscription.plan} Tier
             </span>
             <Badge variant={profile.subscription.plan === "pro" ? "pro" : "default"} size="sm">
               {profile.subscription.plan.toUpperCase()}
             </Badge>
           </div>
-          <Link href="/pricing" className="text-[11px] font-bold text-indigo-600 hover:underline block">
+          <Link href="/pricing" className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline block">
             {profile.subscription.plan === "pro" ? "Manage Subscription →" : "Upgrade to Pro →"}
           </Link>
         </div>
@@ -160,22 +160,22 @@ export default function DashboardOverviewPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-indigo-600" />
-            <h2 className="text-lg font-bold text-slate-900">My Resumes</h2>
+            <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">My Resumes</h2>
           </div>
           <Link
             href="/dashboard/resumes"
-            className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
           >
             View all ({resumes.length}) <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {resumes.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-white space-y-3">
-            <FileText className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="font-bold text-sm text-slate-800">No resumes yet</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <div className="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+            <FileText className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
+            <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">No resumes yet</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               Create your first ATS-friendly resume to start applying for jobs.
             </p>
             <Link href="/dashboard/resumes/new">
@@ -187,32 +187,32 @@ export default function DashboardOverviewPage() {
             {resumes.slice(0, 3).map((res) => (
               <div
                 key={res.id}
-                className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between space-y-4"
+                className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between space-y-4"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="primary" size="sm">
                       {res.settings?.template.toUpperCase() || "CLASSIC"}
                     </Badge>
-                    <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {new Date(res.updatedAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <h3 className="font-bold text-sm text-slate-900 truncate">
+                  <h3 className="font-bold text-sm text-slate-900 dark:text-white truncate">
                     {res.title}
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1 truncate">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
                     {res.personalInfo.fullName} • {res.personalInfo.jobTitle || "Resume"}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
                       onClick={() => handleDuplicate(res.id)}
-                      className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                      className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg"
                       title="Duplicate resume"
                     >
                       <Copy className="w-4 h-4" />
@@ -226,7 +226,7 @@ export default function DashboardOverviewPage() {
                           title: res.title,
                         })
                       }
-                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg"
+                      className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-600 rounded-lg"
                       title="Delete resume"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -249,22 +249,22 @@ export default function DashboardOverviewPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-indigo-600" />
-            <h2 className="text-lg font-bold text-slate-900">My Portfolios</h2>
+            <Globe className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">My Portfolios</h2>
           </div>
           <Link
             href="/dashboard/portfolios"
-            className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
           >
             View all ({portfolios.length}) <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {portfolios.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-white space-y-3">
-            <Globe className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="font-bold text-sm text-slate-800">No portfolios yet</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <div className="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+            <Globe className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
+            <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">No portfolios yet</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               Publish your personal portfolio website with a unique shareable slug.
             </p>
             <Link href="/dashboard/portfolios/new">
@@ -276,7 +276,7 @@ export default function DashboardOverviewPage() {
             {portfolios.slice(0, 3).map((port) => (
               <div
                 key={port.id}
-                className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between space-y-4"
+                className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between space-y-4"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -289,26 +289,26 @@ export default function DashboardOverviewPage() {
                         DRAFT
                       </Badge>
                     )}
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
                       /{port.slug}
                     </span>
                   </div>
-                  <h3 className="font-bold text-sm text-slate-900 truncate">
+                  <h3 className="font-bold text-sm text-slate-900 dark:text-white truncate">
                     {port.title}
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1 truncate">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
                     {port.fullName} • {port.headline}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-1">
                     {port.isPublished && (
                       <a
                         href={`/portfolio/${port.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="p-1.5 text-slate-400 hover:text-indigo-600 rounded-lg"
+                        className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg"
                         title="View live site"
                       >
                         <ExternalLink className="w-4 h-4" />
@@ -323,7 +323,7 @@ export default function DashboardOverviewPage() {
                           title: port.title,
                         })
                       }
-                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg"
+                      className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-600 rounded-lg"
                       title="Delete portfolio"
                     >
                       <Trash2 className="w-4 h-4" />

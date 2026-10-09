@@ -103,41 +103,41 @@ export function UpgradeModal({
     >
       <div className="space-y-6 pt-2">
         {/* Pro Plan Card */}
-        <div className="p-5 rounded-2xl border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white relative shadow-sm">
+        <div className="p-5 rounded-2xl border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white dark:from-indigo-950/40 dark:to-slate-900 relative shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
                 Full Career Acceleration
               </span>
-              <h4 className="text-xl font-black text-slate-900">{proPlan.name}</h4>
+              <h4 className="text-xl font-black text-slate-900 dark:text-white">{proPlan.name}</h4>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-black text-slate-900">${proPlan.priceMonthly}</span>
-              <span className="text-xs text-slate-500 font-medium"> / month</span>
+              <span className="text-2xl font-black text-slate-900 dark:text-white">${proPlan.priceMonthly}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium"> / month</span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-600 mb-4">{proPlan.tagline}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-300 mb-4">{proPlan.tagline}</p>
 
-          <ul className="space-y-2 text-xs text-slate-700 mb-6">
+          <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300 mb-6">
             {proPlan.features.map((f, i) => (
               <li key={i} className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>{f}</span>
               </li>
             ))}
           </ul>
 
           {setupNotice && (
-            <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <div className="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-300 text-xs flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold">Payment Gateway Notice:</p>
                 <p className="mt-0.5">{setupNotice}</p>
                 <button
                   type="button"
                   onClick={handleSandboxUpgrade}
-                  className="mt-2 text-indigo-700 underline font-bold"
+                  className="mt-2 text-indigo-700 dark:text-indigo-400 underline font-bold"
                 >
                   Click here to enable Sandbox Pro Access for testing
                 </button>
@@ -157,7 +157,7 @@ export function UpgradeModal({
             >
               Subscribe with Razorpay
             </Button>
-            <p className="text-center text-[10px] text-slate-400 flex items-center justify-center gap-1">
+            <p className="text-center text-[10px] text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               Cancel anytime. 100% secure payment checkout.
             </p>

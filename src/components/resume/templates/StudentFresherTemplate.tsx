@@ -14,23 +14,23 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#2563eb";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed max-w-[850px] mx-auto min-h-[1100px] p-8 sm:p-10 shadow-sm">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-9 shadow-sm box-border">
       {/* Header with vibrant accent banner underline */}
       <header className="pb-5 border-b-2" style={{ borderColor: accent }}>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+            <h1 className="text-3xl font-black tracking-tight text-slate-900">
               {personalInfo.fullName || "Your Full Name"}
             </h1>
             <p className="text-sm font-semibold text-slate-600 mt-0.5">
               {personalInfo.jobTitle || "Aspiring Software Engineer"}
             </p>
           </div>
-          <div className="text-[11px] text-slate-600 space-y-1 sm:text-right">
-            {personalInfo.email && <div className="flex items-center sm:justify-end gap-1.5"><Mail className="w-3 h-3" style={{ color: accent }} />{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="flex items-center sm:justify-end gap-1.5"><Phone className="w-3 h-3" style={{ color: accent }} />{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="flex items-center sm:justify-end gap-1.5"><MapPin className="w-3 h-3" style={{ color: accent }} />{personalInfo.location}</div>}
-            {personalInfo.github && <div className="flex items-center sm:justify-end gap-1.5"><Github className="w-3 h-3" style={{ color: accent }} />{personalInfo.github.replace(/^https?:\/\//, "")}</div>}
+          <div className="text-[11px] text-slate-600 space-y-1 text-right">
+            {personalInfo.email && <div className="flex items-center justify-end gap-1.5"><Mail className="w-3 h-3" style={{ color: accent }} />{personalInfo.email}</div>}
+            {personalInfo.phone && <div className="flex items-center justify-end gap-1.5"><Phone className="w-3 h-3" style={{ color: accent }} />{personalInfo.phone}</div>}
+            {personalInfo.location && <div className="flex items-center justify-end gap-1.5"><MapPin className="w-3 h-3" style={{ color: accent }} />{personalInfo.location}</div>}
+            {personalInfo.github && <div className="flex items-center justify-end gap-1.5"><Github className="w-3 h-3" style={{ color: accent }} />{personalInfo.github.replace(/^https?:\/\//, "")}</div>}
           </div>
         </div>
       </header>
@@ -63,12 +63,12 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
             <div className="space-y-3">
               {education.map((edu) => (
                 <div key={edu.id} className="p-3 rounded-xl border border-slate-100 bg-slate-50/50">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-row items-center justify-between">
                     <div>
                       <span className="font-bold text-slate-900 text-xs">{edu.degree}</span>
                       <p className="text-slate-600 text-[11px] font-medium">{edu.institution} {edu.location && `• ${edu.location}`}</p>
                     </div>
-                    <div className="text-right sm:text-right mt-1 sm:mt-0">
+                    <div className="text-right">
                       <span className="text-[11px] text-slate-500 font-medium">
                         {edu.startDate} – {edu.current ? "Present" : edu.endDate}
                       </span>
@@ -99,7 +99,7 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
             >
               Technical Skills & Proficiencies
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2.5">
               {skillCategories.map((cat) => (
                 <div key={cat.id} className="p-2.5 rounded-lg border border-slate-200/60 bg-white">
                   <span className="font-bold text-slate-800 text-[11px] block mb-1">

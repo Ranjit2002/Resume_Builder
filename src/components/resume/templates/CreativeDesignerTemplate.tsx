@@ -14,7 +14,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#e11d48";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed max-w-[850px] mx-auto min-h-[1100px] p-8 sm:p-12 shadow-sm relative overflow-hidden">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-10 shadow-sm relative overflow-hidden box-border">
       {/* Decorative top accent element */}
       <div
         className="absolute top-0 right-0 w-48 h-48 -mr-16 -mt-16 rounded-full opacity-10 pointer-events-none"
@@ -22,7 +22,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
       />
 
       {/* Header */}
-      <header className="pb-6 mb-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <header className="pb-6 mb-6 border-b border-slate-100 flex flex-row items-end justify-between gap-4">
         <div>
           <span
             className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full inline-block mb-1"
@@ -30,7 +30,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
           >
             Creative Portfolio
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900">
+          <h1 className="text-3xl font-black tracking-tight text-slate-900">
             {personalInfo.fullName || "Your Full Name"}
           </h1>
           <p className="text-sm font-semibold text-slate-500 mt-1">
@@ -48,9 +48,9 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
       </header>
 
       {/* Two Column Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-3 gap-8">
         {/* Left Column (2/3 width) */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="col-span-2 space-y-6">
           {/* Summary */}
           {summary && !settings.hiddenSections?.includes("summary") && (
             <section>

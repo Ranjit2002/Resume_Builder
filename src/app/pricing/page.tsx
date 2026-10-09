@@ -28,7 +28,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-500 selection:text-white transition-colors duration-200">
       <Navbar />
 
       <main className="flex-1 py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,10 +36,10 @@ export default function PricingPage() {
           <Badge variant="primary" size="md">
             Transparent Pricing
           </Badge>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             Invest in your next career move
           </h1>
-          <p className="text-base text-slate-600 leading-relaxed">
+          <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
             Everything you need to create standout job applications and personal websites without monthly lock-ins.
           </p>
         </div>
@@ -51,28 +51,28 @@ export default function PricingPage() {
               key={plan.id}
               className={`p-8 sm:p-10 rounded-3xl border flex flex-col justify-between ${
                 plan.popular
-                  ? "border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white shadow-xl relative"
-                  : "border-slate-200 bg-white shadow-sm"
+                  ? "border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white dark:from-indigo-950/30 dark:to-slate-900 shadow-xl relative"
+                  : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm"
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-2xl font-black text-slate-900">{plan.name}</h3>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">{plan.name}</h3>
                   {plan.popular && <Badge variant="pro" size="sm">MOST POPULAR</Badge>}
                 </div>
-                <p className="text-xs text-slate-500 mb-6">{plan.tagline}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">{plan.tagline}</p>
 
                 <div className="mb-6">
-                  <span className="text-5xl font-black text-slate-900">
+                  <span className="text-5xl font-black text-slate-900 dark:text-white">
                     ${plan.priceMonthly}
                   </span>
-                  <span className="text-xs text-slate-500 font-medium"> / month</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium"> / month</span>
                 </div>
 
-                <ul className="space-y-3.5 text-xs text-slate-700 mb-8">
+                <ul className="space-y-3.5 text-xs text-slate-700 dark:text-slate-300 mb-8">
                   {plan.features.map((feat, idx) => (
                     <li key={idx} className="flex items-center gap-3">
-                      <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -100,38 +100,38 @@ export default function PricingPage() {
         </div>
 
         {/* Comparison Table */}
-        <div className="max-w-4xl mx-auto rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900 mb-6">Detailed Feature Comparison</h2>
+        <div className="max-w-4xl mx-auto rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Detailed Feature Comparison</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-200 pb-3 text-slate-400 font-bold uppercase tracking-wider">
+                <tr className="border-b border-slate-200 dark:border-slate-800 pb-3 text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">
                   <th className="py-3">Features & Limits</th>
                   <th className="py-3 px-4">Starter (Free)</th>
-                  <th className="py-3 px-4 text-indigo-600">Pro Career</th>
+                  <th className="py-3 px-4 text-indigo-600 dark:text-indigo-400">Pro Career</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-slate-700 dark:text-slate-300">
                 {comparisonFeatures.map((f, i) => (
-                  <tr key={i} className="hover:bg-slate-50">
+                  <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="py-3.5 font-medium">{f.name}</td>
                     <td className="py-3.5 px-4">
                       {typeof f.free === "boolean" ? (
                         f.free ? (
-                          <Check className="w-4 h-4 text-emerald-600" />
+                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                         ) : (
-                          <X className="w-4 h-4 text-slate-300" />
+                          <X className="w-4 h-4 text-slate-300 dark:text-slate-600" />
                         )
                       ) : (
                         <span>{f.free}</span>
                       )}
                     </td>
-                    <td className="py-3.5 px-4 font-semibold text-slate-900">
+                    <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
                       {typeof f.pro === "boolean" ? (
                         f.pro ? (
-                          <Check className="w-4 h-4 text-emerald-600" />
+                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                         ) : (
-                          <X className="w-4 h-4 text-slate-300" />
+                          <X className="w-4 h-4 text-slate-300 dark:text-slate-600" />
                         )
                       ) : (
                         <span>{f.pro}</span>

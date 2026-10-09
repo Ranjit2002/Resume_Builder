@@ -14,14 +14,14 @@ export function ClassicTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#1e293b";
 
   return (
-    <div className="bg-white text-slate-900 p-8 sm:p-12 font-serif text-sm leading-relaxed max-w-[850px] mx-auto min-h-[1100px] shadow-sm">
+    <div className="bg-white text-slate-900 p-10 font-serif text-sm leading-relaxed w-full min-h-[1123px] box-border">
       {/* Header */}
       <header className="border-b-2 pb-6 text-center" style={{ borderColor: accent }}>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 uppercase">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900 uppercase">
           {personalInfo.fullName || "Your Full Name"}
         </h1>
         {personalInfo.jobTitle && (
-          <p className="text-base sm:text-lg font-sans font-medium text-slate-600 mt-1">
+          <p className="text-base font-sans font-medium text-slate-600 mt-1">
             {personalInfo.jobTitle}
           </p>
         )}
@@ -88,7 +88,7 @@ export function ClassicTemplate({ data }: TemplateProps) {
             <div className="space-y-4">
               {experiences.map((exp) => (
                 <div key={exp.id}>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-row items-center justify-between">
                     <div>
                       <span className="font-bold text-slate-900 text-sm">{exp.jobTitle}</span>
                       <span className="text-slate-600 font-sans text-xs ml-1">
@@ -123,7 +123,7 @@ export function ClassicTemplate({ data }: TemplateProps) {
             </h2>
             <div className="space-y-3">
               {education.map((edu) => (
-                <div key={edu.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div key={edu.id} className="flex flex-row items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-900 text-sm">{edu.degree}</span>
                     <span className="text-slate-600 font-sans text-xs ml-1">
@@ -150,8 +150,8 @@ export function ClassicTemplate({ data }: TemplateProps) {
             </h2>
             <div className="space-y-1.5 font-sans text-xs">
               {skillCategories.map((cat) => (
-                <div key={cat.id} className="flex flex-col sm:flex-row gap-1">
-                  <span className="font-bold text-slate-800 sm:w-36 shrink-0">
+                <div key={cat.id} className="flex flex-row gap-1">
+                  <span className="font-bold text-slate-800 w-36 shrink-0">
                     {cat.categoryName}:
                   </span>
                   <span className="text-slate-600">
@@ -199,7 +199,7 @@ export function ClassicTemplate({ data }: TemplateProps) {
 
         {/* Certifications & Awards */}
         {(certifications?.length > 0 || awards?.length > 0) && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 font-sans">
+          <div className="grid grid-cols-2 gap-6 font-sans">
             {certifications && certifications.length > 0 && !settings.hiddenSections?.includes("certifications") && (
               <section>
                 <h2

@@ -57,28 +57,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative transition-colors duration-200">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center gap-2.5 mb-4 group">
           <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
             <FileText className="w-5 h-5 text-white" />
           </div>
-          <span className="font-extrabold text-2xl tracking-tight text-slate-900">
-            Career<span className="text-indigo-600">Craft</span>
+          <span className="font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white">
+            Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
           </span>
         </Link>
-        <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
           Welcome back to CareerCraft
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           Enter your credentials to manage your resumes & portfolios
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-xl shadow-slate-200/50 sm:rounded-3xl border border-slate-200/80 sm:px-10">
+        <div className="bg-white dark:bg-slate-900 py-8 px-6 shadow-xl shadow-slate-200/50 dark:shadow-none sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 sm:px-10">
           {errorMessage && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMessage}</span>
             </div>
@@ -106,11 +106,11 @@ export default function LoginPage() {
             />
 
             <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 text-slate-600 cursor-pointer">
+              <label className="flex items-center gap-2 text-slate-600 dark:text-slate-300 cursor-pointer">
                 <input type="checkbox" className="rounded text-indigo-600" defaultChecked />
                 <span>Remember me</span>
               </label>
-              <a href="#" className="font-semibold text-indigo-600 hover:underline">
+              <a href="#" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
                 Forgot password?
               </a>
             </div>
@@ -127,22 +127,22 @@ export default function LoginPage() {
           </form>
 
           {/* Guest Quick Test Button */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
+          <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800">
             <Button
               type="button"
               variant="outline"
               size="md"
               className="w-full justify-center text-xs"
               onClick={handleGuestLogin}
-              leftIcon={<UserCheck className="w-4 h-4 text-emerald-600" />}
+              leftIcon={<UserCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
             >
               Continue as Demo Guest User
             </Button>
           </div>
 
-          <p className="mt-6 text-center text-xs text-slate-500">
+          <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
             Don't have an account yet?{" "}
-            <Link href="/signup" className="font-bold text-indigo-600 hover:underline">
+            <Link href="/signup" className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
               Create an account
             </Link>
           </p>

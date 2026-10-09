@@ -57,12 +57,12 @@ export default function PortfoliosListPage() {
 
   return (
     <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             My Portfolios
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Personal portfolio websites published with shareable unique slugs.
           </p>
         </div>
@@ -84,12 +84,12 @@ export default function PortfoliosListPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-white space-y-3">
-          <Globe className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="font-bold text-sm text-slate-800">
+        <div className="p-12 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+          <Globe className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
+          <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">
             {searchQuery ? "No matching portfolios found" : "No portfolios in your workspace"}
           </h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Build and launch a personal developer or designer portfolio in minutes.
           </p>
           {!searchQuery && (
@@ -103,7 +103,7 @@ export default function PortfoliosListPage() {
           {filtered.map((port) => (
             <div
               key={port.id}
-              className="p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+              className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -116,30 +116,30 @@ export default function PortfoliosListPage() {
                       DRAFT
                     </Badge>
                   )}
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
                     /{port.slug}
                   </span>
                 </div>
-                <h3 className="font-bold text-base text-slate-900 truncate">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white truncate">
                   {port.title}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 truncate">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
                   {port.fullName} • {port.headline}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-1">
                   {port.isPublished && (
                     <>
                       <button
                         type="button"
                         onClick={() => handleCopy(port.slug)}
-                        className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                        className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg"
                         title="Copy shareable link"
                       >
                         {copiedSlug === port.slug ? (
-                          <Check className="w-4 h-4 text-emerald-600" />
+                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                         ) : (
                           <Copy className="w-4 h-4" />
                         )}
@@ -148,7 +148,7 @@ export default function PortfoliosListPage() {
                         href={`/portfolio/${port.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="p-1.5 text-slate-400 hover:text-indigo-600 rounded-lg"
+                        className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg"
                         title="Open live website"
                       >
                         <ExternalLink className="w-4 h-4" />
@@ -160,7 +160,7 @@ export default function PortfoliosListPage() {
                     onClick={() =>
                       setDeleteModal({ id: port.id, title: port.title })
                     }
-                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg"
+                    className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-600 rounded-lg"
                     title="Delete portfolio"
                   >
                     <Trash2 className="w-4 h-4" />

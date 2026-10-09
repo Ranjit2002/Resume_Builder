@@ -17,7 +17,6 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -74,7 +73,6 @@ export function Navbar() {
 
           {/* Right Action Buttons */}
           <div className="hidden md:flex items-center gap-2.5">
-            <ThemeToggle size="sm" />
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" leftIcon={<LayoutDashboard className="w-4 h-4" />}>
                 Dashboard
@@ -98,7 +96,6 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle size="sm" />
             <Link href="/dashboard/resumes/new">
               <Button variant="primary" size="sm">
                 Create
@@ -121,7 +118,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-4">
+        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-4">
           <div className="space-y-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -130,7 +127,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400"
                 >
                   <Icon className="w-5 h-5 text-indigo-500" />
                   <span>{link.label}</span>
@@ -139,7 +136,7 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">
             <Link
               href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}

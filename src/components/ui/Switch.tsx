@@ -28,7 +28,7 @@ export function Switch({
         onClick={() => !disabled && onChange(!checked)}
         className={cn(
           "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2",
-          checked ? "bg-indigo-600" : "bg-slate-200"
+          checked ? "bg-indigo-600" : "bg-slate-200 dark:bg-slate-700"
         )}
       >
         <span
@@ -40,8 +40,8 @@ export function Switch({
       </button>
       {(label || description) && (
         <div className="text-left">
-          {label && <span className="text-sm font-medium text-slate-800 block">{label}</span>}
-          {description && <span className="text-xs text-slate-500 block">{description}</span>}
+          {label && <span className="text-sm font-medium text-slate-800 dark:text-slate-200 block">{label}</span>}
+          {description && <span className="text-xs text-slate-500 dark:text-slate-400 block">{description}</span>}
         </div>
       )}
     </label>

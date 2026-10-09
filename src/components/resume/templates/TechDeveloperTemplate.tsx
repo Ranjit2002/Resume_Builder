@@ -14,16 +14,16 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#0284c7";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed max-w-[850px] mx-auto min-h-[1100px] p-8 sm:p-10 shadow-sm border-t-8" style={{ borderTopColor: accent }}>
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-9 shadow-sm border-t-8 box-border" style={{ borderTopColor: accent }}>
       {/* Dev Header */}
       <header className="border-b border-slate-200 pb-5 mb-5">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-bold border border-slate-200">
                 &lt;/dev&gt;
               </span>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
                 {personalInfo.fullName || "Your Full Name"}
               </h1>
             </div>
@@ -33,7 +33,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
           </div>
 
           {/* Links */}
-          <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-[11px] font-mono text-slate-600">
+          <div className="flex flex-col items-end gap-1.5 text-[11px] font-mono text-slate-600">
             {personalInfo.email && (
               <span className="flex items-center gap-1.5 hover:text-slate-900">
                 <Mail className="w-3.5 h-3.5" style={{ color: accent }} />
@@ -87,7 +87,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
                 // Technical Stack
               </h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-900 text-white p-3.5 rounded-xl font-mono text-[11px]">
+            <div className="grid grid-cols-2 gap-2 bg-slate-900 text-white p-3.5 rounded-xl font-mono text-[11px]">
               {skillCategories.map((cat) => (
                 <div key={cat.id} className="space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">
@@ -118,7 +118,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
             <div className="space-y-4">
               {experiences.map((exp) => (
                 <div key={exp.id} className="border-l-2 pl-3.5" style={{ borderColor: accent }}>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between font-mono">
+                  <div className="flex flex-row items-center justify-between font-mono">
                     <span className="font-bold text-slate-900 text-xs">{exp.jobTitle}</span>
                     <span className="text-[10px] text-slate-500">
                       {exp.startDate} ~ {exp.current ? "CURRENT" : exp.endDate}
@@ -149,7 +149,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
                 // Featured Builds
               </h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {projects.map((proj) => (
                 <div key={proj.id} className="p-3 rounded-lg border border-slate-200 bg-slate-50/40">
                   <div className="flex items-center justify-between">
@@ -178,7 +178,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
 
         {/* Education & Certs */}
         {(education?.length > 0 || certifications?.length > 0) && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-3">
+          <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3">
             {education && education.length > 0 && (
               <div>
                 <h3 className="text-xs font-mono font-bold uppercase text-slate-700 mb-1.5">

@@ -19,7 +19,6 @@ import { AiAssistantModal } from "../ai/AiAssistantModal";
 import { UpgradeModal } from "../payment/UpgradeModal";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import confetti from "canvas-confetti";
 import {
   User,
@@ -206,8 +205,6 @@ export function ResumeEditor({
               <Eye className="w-3.5 h-3.5" /> Preview
             </button>
           </div>
-
-          <ThemeToggle size="sm" />
 
           <Button
             variant="outline"
@@ -443,7 +440,13 @@ export function ResumeEditor({
           </div>
 
           {/* Render Resume Document */}
-          <div className="w-full max-w-[850px] transition-all print:max-w-none print:w-full print:m-0">
+          <div
+            className="transition-all print:max-w-none print:w-full print:m-0 flex justify-center pb-12"
+            style={{
+              width: `${Math.round(794 * previewScale)}px`,
+              minHeight: `${Math.round(1123 * previewScale)}px`,
+            }}
+          >
             <ResumeTemplateDispatcher data={resume} scale={previewScale} />
           </div>
         </section>

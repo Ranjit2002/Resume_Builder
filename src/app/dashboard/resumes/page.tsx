@@ -54,12 +54,12 @@ export default function ResumesListPage() {
   return (
     <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             My Resumes
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Create tailored versions for different job descriptions and industries.
           </p>
         </div>
@@ -83,12 +83,12 @@ export default function ResumesListPage() {
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-white space-y-3">
-          <FileText className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="font-bold text-sm text-slate-800">
+        <div className="p-12 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+          <FileText className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
+          <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">
             {searchQuery ? "No matching resumes found" : "No resumes in your workspace"}
           </h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             {searchQuery
               ? "Try searching with a different keyword."
               : "Create an ATS-friendly resume to start applying for jobs."}
@@ -104,32 +104,32 @@ export default function ResumesListPage() {
           {filtered.map((res) => (
             <div
               key={res.id}
-              className="p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+              className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <Badge variant="primary" size="sm">
                     {res.settings?.template.toUpperCase() || "CLASSIC"}
                   </Badge>
-                  <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {new Date(res.updatedAt).toLocaleDateString()}
                   </span>
                 </div>
-                <h3 className="font-bold text-base text-slate-900 truncate">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white truncate">
                   {res.title}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 truncate">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
                   {res.personalInfo.fullName} • {res.personalInfo.jobTitle || "Resume"}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
                     onClick={() => handleDuplicate(res.id)}
-                    className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                    className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg"
                     title="Duplicate resume"
                   >
                     <Copy className="w-4 h-4" />
@@ -139,7 +139,7 @@ export default function ResumesListPage() {
                     onClick={() =>
                       setDeleteModal({ id: res.id, title: res.title })
                     }
-                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg"
+                    className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-600 rounded-lg"
                     title="Delete resume"
                   >
                     <Trash2 className="w-4 h-4" />
