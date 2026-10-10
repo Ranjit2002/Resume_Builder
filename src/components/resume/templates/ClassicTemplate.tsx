@@ -4,6 +4,7 @@ import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import { Linkedin, Github } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -49,13 +50,19 @@ export function ClassicTemplate({ data }: TemplateProps) {
           {personalInfo.linkedin && (
             <span className="flex items-center gap-1">
               <Linkedin className="w-3.5 h-3.5" style={{ color: accent }} />
-              LinkedIn
+              {formatDisplayUrl(personalInfo.linkedin)}
+            </span>
+          )}
+          {personalInfo.github && (
+            <span className="flex items-center gap-1">
+              <Github className="w-3.5 h-3.5" style={{ color: accent }} />
+              {formatDisplayUrl(personalInfo.github)}
             </span>
           )}
           {personalInfo.website && (
             <span className="flex items-center gap-1">
               <Globe className="w-3.5 h-3.5" style={{ color: accent }} />
-              {personalInfo.website.replace(/^https?:\/\//, "")}
+              {formatDisplayUrl(personalInfo.website)}
             </span>
           )}
         </div>

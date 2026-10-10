@@ -52,7 +52,7 @@ export function ResumeCustomizationForm({
     <div className="space-y-6">
       {/* Template Selector Cards */}
       <div className="space-y-3">
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-800">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
           Resume Template Style
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -64,13 +64,13 @@ export function ResumeCustomizationForm({
                 onClick={() => selectTemplate(tmpl.id, tmpl.isPro)}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer relative flex flex-col justify-between ${
                   isSelected
-                    ? "border-indigo-600 bg-indigo-50/40 ring-2 ring-indigo-500/20"
-                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    ? "border-indigo-600 dark:border-indigo-500 bg-indigo-50/70 dark:bg-indigo-950/60 ring-2 ring-indigo-500/25"
+                    : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-xs text-slate-900">
+                    <span className="font-bold text-xs text-slate-900 dark:text-white">
                       {tmpl.name}
                     </span>
                     <div className="flex items-center gap-1">
@@ -82,17 +82,17 @@ export function ResumeCustomizationForm({
                       )}
                     </div>
                   </div>
-                  <p className="text-[11px] text-slate-500 leading-normal mb-2">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-normal mb-2">
                     {tmpl.description}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-medium">
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <span className="inline-block text-[10px] font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/80 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900/60">
                     {tmpl.category}
                   </span>
                   {isSelected && (
-                    <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
                       <Check className="w-3.5 h-3.5" /> Active
                     </span>
                   )}
@@ -104,8 +104,8 @@ export function ResumeCustomizationForm({
       </div>
 
       {/* Accent Color Picker */}
-      <div className="space-y-3 pt-3 border-t border-slate-100">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+      <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
           <Palette className="w-3.5 h-3.5" /> Accent Color
         </label>
         <div className="flex flex-wrap items-center gap-2">
@@ -116,7 +116,7 @@ export function ResumeCustomizationForm({
               onClick={() => onChange({ ...settings, accentColor: color })}
               className={`w-7 h-7 rounded-full transition-transform flex items-center justify-center ${
                 settings.accentColor === color
-                  ? "scale-110 ring-2 ring-offset-2 ring-slate-400"
+                  ? "scale-110 ring-2 ring-offset-2 ring-slate-400 dark:ring-offset-slate-900"
                   : "hover:scale-105"
               }`}
               style={{ backgroundColor: color }}
@@ -129,7 +129,7 @@ export function ResumeCustomizationForm({
           ))}
           {/* Custom hex input */}
           <div className="flex items-center gap-1.5 ml-2">
-            <span className="text-xs text-slate-400">Custom:</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">Custom:</span>
             <input
               type="color"
               value={settings.accentColor || "#4f46e5"}
@@ -143,9 +143,9 @@ export function ResumeCustomizationForm({
       </div>
 
       {/* Typography & Spacing Options */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-100">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800">
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
             <Type className="w-3.5 h-3.5" /> Typography Font
           </label>
           <select
@@ -156,7 +156,7 @@ export function ResumeCustomizationForm({
                 fontFamily: e.target.value as ResumeSettings["fontFamily"],
               })
             }
-            className="w-full rounded-xl border border-slate-200 py-2 px-3 text-xs bg-white text-slate-900"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 py-2 px-3 text-xs bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
           >
             <option value="sans">Modern Sans-Serif (Plus Jakarta / Inter)</option>
             <option value="serif">Classic Serif (Playfair / Times)</option>
@@ -165,10 +165,10 @@ export function ResumeCustomizationForm({
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
             <AlignJustify className="w-3.5 h-3.5" /> Document Spacing
           </label>
-          <div className="flex rounded-xl border border-slate-200 p-0.5 bg-slate-50">
+          <div className="flex rounded-xl border border-slate-200 dark:border-slate-700 p-0.5 bg-slate-50 dark:bg-slate-900">
             {(["compact", "normal", "relaxed"] as const).map((mode) => (
               <button
                 key={mode}
@@ -176,8 +176,8 @@ export function ResumeCustomizationForm({
                 onClick={() => onChange({ ...settings, spacing: mode })}
                 className={`flex-1 py-1.5 text-xs font-medium rounded-lg capitalize transition-colors ${
                   settings.spacing === mode
-                    ? "bg-white text-slate-900 shadow-xs font-semibold"
-                    : "text-slate-500 hover:text-slate-800"
+                    ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs font-semibold"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
                 }`}
               >
                 {mode}
@@ -188,8 +188,8 @@ export function ResumeCustomizationForm({
       </div>
 
       {/* Section Visibility & Toggles */}
-      <div className="space-y-3 pt-3 border-t border-slate-100">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+      <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
           <EyeOff className="w-3.5 h-3.5" /> Section Visibility
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -211,8 +211,8 @@ export function ResumeCustomizationForm({
                 onClick={() => toggleHiddenSection(sec.key)}
                 className={`text-xs px-3 py-1.5 rounded-xl border text-left flex items-center justify-between transition-colors ${
                   !isHidden
-                    ? "bg-white border-slate-200 text-slate-800 font-medium"
-                    : "bg-slate-50 border-dashed border-slate-300 text-slate-400 line-through"
+                    ? "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium"
+                    : "bg-slate-50 dark:bg-slate-950/60 border-dashed border-slate-300 dark:border-slate-800 text-slate-400 dark:text-slate-600 line-through"
                 }`}
               >
                 <span>{sec.label}</span>

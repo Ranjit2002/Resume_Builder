@@ -3,7 +3,8 @@
 import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Sparkles, Palette, ExternalLink, Mail, Phone, MapPin, Globe } from "lucide-react";
-import { Linkedin } from "@/components/ui/Icons";
+import { Linkedin, Github } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -42,8 +43,10 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
         <div className="text-[11px] text-slate-600 space-y-1">
           {personalInfo.email && <div className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" style={{ color: accent }} />{personalInfo.email}</div>}
           {personalInfo.phone && <div className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" style={{ color: accent }} />{personalInfo.phone}</div>}
-          {personalInfo.website && <div className="flex items-center gap-1.5 font-medium"><Globe className="w-3.5 h-3.5" style={{ color: accent }} />{personalInfo.website.replace(/^https?:\/\//, "")}</div>}
           {personalInfo.location && <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" style={{ color: accent }} />{personalInfo.location}</div>}
+          {personalInfo.website && <div className="flex items-center gap-1.5 font-medium"><Globe className="w-3.5 h-3.5" style={{ color: accent }} />{formatDisplayUrl(personalInfo.website)}</div>}
+          {personalInfo.linkedin && <div className="flex items-center gap-1.5"><Linkedin className="w-3.5 h-3.5" style={{ color: accent }} />{formatDisplayUrl(personalInfo.linkedin)}</div>}
+          {personalInfo.github && <div className="flex items-center gap-1.5"><Github className="w-3.5 h-3.5" style={{ color: accent }} />{formatDisplayUrl(personalInfo.github)}</div>}
         </div>
       </header>
 

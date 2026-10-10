@@ -4,6 +4,7 @@ import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Terminal, Code, Cpu, GitBranch, ExternalLink, Mail, Phone, MapPin } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -43,13 +44,13 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
             {personalInfo.github && (
               <span className="flex items-center gap-1.5 hover:text-slate-900">
                 <Github className="w-3.5 h-3.5" style={{ color: accent }} />
-                {personalInfo.github.replace(/^https?:\/\//, "")}
+                {formatDisplayUrl(personalInfo.github)}
               </span>
             )}
             {personalInfo.linkedin && (
               <span className="flex items-center gap-1.5 hover:text-slate-900">
                 <Linkedin className="w-3.5 h-3.5" style={{ color: accent }} />
-                LinkedIn
+                {formatDisplayUrl(personalInfo.linkedin)}
               </span>
             )}
             {personalInfo.location && (

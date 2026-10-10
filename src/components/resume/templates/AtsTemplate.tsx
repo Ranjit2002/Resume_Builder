@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ResumeData } from "@/lib/types/resume";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -27,8 +28,9 @@ export function AtsTemplate({ data }: TemplateProps) {
           {personalInfo.email && <span>{personalInfo.email}</span>}
           {personalInfo.phone && <span>• {personalInfo.phone}</span>}
           {personalInfo.location && <span>• {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span>• LinkedIn: {personalInfo.linkedin}</span>}
-          {personalInfo.github && <span>• GitHub: {personalInfo.github}</span>}
+          {personalInfo.website && <span>• {formatDisplayUrl(personalInfo.website)}</span>}
+          {personalInfo.linkedin && <span>• {formatDisplayUrl(personalInfo.linkedin)}</span>}
+          {personalInfo.github && <span>• {formatDisplayUrl(personalInfo.github)}</span>}
         </div>
       </header>
 

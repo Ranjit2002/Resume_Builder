@@ -3,7 +3,8 @@
 import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Briefcase, Award, Mail, Phone, MapPin, Globe } from "lucide-react";
-import { Linkedin } from "@/components/ui/Icons";
+import { Linkedin, Github } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -29,7 +30,8 @@ export function ExecutiveTemplate({ data }: TemplateProps) {
             {personalInfo.email && <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5" />{personalInfo.email}</span>}
             {personalInfo.phone && <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" />{personalInfo.phone}</span>}
             {personalInfo.location && <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin className="w-3.5 h-3.5" />LinkedIn</span>}
+            {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin className="w-3.5 h-3.5" />{formatDisplayUrl(personalInfo.linkedin)}</span>}
+            {personalInfo.github && <span className="flex items-center gap-1"><Github className="w-3.5 h-3.5" />{formatDisplayUrl(personalInfo.github)}</span>}
           </div>
         </div>
       </header>

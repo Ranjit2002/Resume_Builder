@@ -48,38 +48,45 @@ function setLocalItem<T>(key: string, value: T): void {
 export async function getResumes(): Promise<ResumeData[]> {
   if (typeof window === "undefined") return [SAMPLE_RESUME];
 
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      if (supabase) {
-        const { data, error } = await supabase
-          .from("resumes")
-          .select("*")
-          .order("updated_at", { ascending: false });
-
-        if (!error && data && data.length > 0) {
-          return data.map((row) => ({
-            ...row.data,
-            id: row.id,
-            title: row.title,
-            updatedAt: row.updated_at,
-            createdAt: row.created_at,
-          }));
-        }
-      }
-    } catch (e) {
-      console.warn("Supabase fetch failed, falling back to local storage:", e);
-    }
-  }
-
-  // Local storage fallback
+  // 1. Immediately read from localStorage (0ms latency, instant response)
   const stored = getLocalItem<ResumeData[]>(RESUMES_STORAGE_KEY, []);
-  if (!stored || stored.length === 0) {
-    const initial = [SAMPLE_RESUME];
-    setLocalItem(RESUMES_STORAGE_KEY, initial);
-    return initial;
+  if (stored && stored.length > 0) {
+    return stored;
   }
-  return stored;
+
+  // 2. Initialize with sample resume if empty
+  const initial = [SAMPLE_RESUME];
+  setLocalItem(RESUMES_STORAGE_KEY, initial);
+
+  // 3. Optional background sync if Supabase configured
+  if (isSupabaseConfigured()) {
+    (async () => {
+      try {
+        const supabase = createClient();
+        if (supabase) {
+          const { data, error } = await supabase
+            .from("resumes")
+            .select("*")
+            .order("updated_at", { ascending: false });
+
+          if (!error && data && data.length > 0) {
+            const remoteResumes: ResumeData[] = data.map((row) => ({
+              ...row.data,
+              id: row.id,
+              title: row.title,
+              updatedAt: row.updated_at,
+              createdAt: row.created_at,
+            }));
+            setLocalItem(RESUMES_STORAGE_KEY, remoteResumes);
+          }
+        }
+      } catch (e) {
+        // Silently catch background sync errors
+      }
+    })();
+  }
+
+  return initial;
 }
 
 export async function getResumeById(id: string): Promise<ResumeData | null> {
@@ -87,33 +94,67 @@ export async function getResumeById(id: string): Promise<ResumeData | null> {
     return id === SAMPLE_RESUME.id ? SAMPLE_RESUME : null;
   }
 
+  // 1. Check local storage FIRST for instant (0ms) load
+  const localList = getLocalItem<ResumeData[]>(RESUMES_STORAGE_KEY, [SAMPLE_RESUME]);
+  const localMatch = localList.find((r) => r.id === id);
+  if (localMatch) {
+    return localMatch;
+  }
+
+  if (id === SAMPLE_RESUME.id || id === "sample-resume-id") {
+    return SAMPLE_RESUME;
+  }
+
+  // 2. Fallback to Supabase with strict 1.5s timeout if not found locally
   if (isSupabaseConfigured()) {
     try {
       const supabase = createClient();
       if (supabase) {
-        const { data, error } = await supabase
+        const fetchPromise = supabase
           .from("resumes")
           .select("*")
           .eq("id", id)
           .single();
 
-        if (!error && data) {
-          return {
-            ...data.data,
-            id: data.id,
-            title: data.title,
-            updatedAt: data.updated_at,
-            createdAt: data.created_at,
+        const timeoutPromise = new Promise<{ data: null; error: string }>((resolve) =>
+          setTimeout(() => resolve({ data: null, error: "timeout" }), 1500)
+        );
+
+        const result = await Promise.race([fetchPromise, timeoutPromise]);
+        // @ts-ignore
+        if (result && !result.error && result.data) {
+          // @ts-ignore
+          const remoteResume: ResumeData = {
+            // @ts-ignore
+            ...result.data.data,
+            // @ts-ignore
+            id: result.data.id,
+            // @ts-ignore
+            title: result.data.title,
+            // @ts-ignore
+            updatedAt: result.data.updated_at,
+            // @ts-ignore
+            createdAt: result.data.created_at,
           };
+          // Cache in local storage for future instant loads
+          setLocalItem(RESUMES_STORAGE_KEY, [remoteResume, ...localList]);
+          return remoteResume;
         }
       }
     } catch (e) {
-      console.warn("Supabase get single failed:", e);
+      console.warn("Supabase resume fetch error:", e);
     }
   }
 
-  const list = await getResumes();
-  return list.find((r) => r.id === id) || (id === SAMPLE_RESUME.id ? SAMPLE_RESUME : null);
+  // 3. Fallback: if not found, return a template-based draft so editor never hangs
+  const fallbackDraft: ResumeData = {
+    ...SAMPLE_RESUME,
+    id,
+    title: "Draft Resume",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  return fallbackDraft;
 }
 
 export async function saveResume(resume: ResumeData): Promise<ResumeData> {
@@ -122,26 +163,7 @@ export async function saveResume(resume: ResumeData): Promise<ResumeData> {
     updatedAt: new Date().toISOString(),
   };
 
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      if (supabase) {
-        const { error } = await supabase.from("resumes").upsert({
-          id: updatedResume.id,
-          title: updatedResume.title,
-          data: updatedResume,
-          updated_at: updatedResume.updatedAt,
-        });
-        if (error) {
-          console.warn("Supabase upsert resume error:", error);
-        }
-      }
-    } catch (e) {
-      console.warn("Supabase save exception:", e);
-    }
-  }
-
-  // Always keep localStorage in sync
+  // 1. Instantly write to localStorage (0ms latency, completely synchronous and reliable)
   const currentList = getLocalItem<ResumeData[]>(RESUMES_STORAGE_KEY, [SAMPLE_RESUME]);
   const index = currentList.findIndex((r) => r.id === updatedResume.id);
   let updatedList: ResumeData[];
@@ -154,6 +176,26 @@ export async function saveResume(resume: ResumeData): Promise<ResumeData> {
   }
 
   setLocalItem(RESUMES_STORAGE_KEY, updatedList);
+
+  // 2. Background sync to Supabase (never blocks the UI or navigation)
+  if (isSupabaseConfigured()) {
+    (async () => {
+      try {
+        const supabase = createClient();
+        if (supabase) {
+          await supabase.from("resumes").upsert({
+            id: updatedResume.id,
+            title: updatedResume.title,
+            data: updatedResume,
+            updated_at: updatedResume.updatedAt,
+          });
+        }
+      } catch (e) {
+        // Silently ignore background sync errors
+      }
+    })();
+  }
+
   return updatedResume;
 }
 
@@ -174,20 +216,23 @@ export async function duplicateResume(id: string): Promise<ResumeData | null> {
 }
 
 export async function deleteResume(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      if (supabase) {
-        await supabase.from("resumes").delete().eq("id", id);
-      }
-    } catch (e) {
-      console.warn("Supabase delete failed:", e);
-    }
-  }
-
   const list = getLocalItem<ResumeData[]>(RESUMES_STORAGE_KEY, []);
   const filtered = list.filter((r) => r.id !== id);
   setLocalItem(RESUMES_STORAGE_KEY, filtered);
+
+  if (isSupabaseConfigured()) {
+    (async () => {
+      try {
+        const supabase = createClient();
+        if (supabase) {
+          await supabase.from("resumes").delete().eq("id", id);
+        }
+      } catch (e) {
+        // Silently catch background deletion error
+      }
+    })();
+  }
+
   return true;
 }
 
@@ -198,39 +243,46 @@ export async function deleteResume(id: string): Promise<boolean> {
 export async function getPortfolios(): Promise<PortfolioData[]> {
   if (typeof window === "undefined") return [SAMPLE_PORTFOLIO];
 
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      if (supabase) {
-        const { data, error } = await supabase
-          .from("portfolios")
-          .select("*")
-          .order("updated_at", { ascending: false });
-
-        if (!error && data && data.length > 0) {
-          return data.map((row) => ({
-            ...row.data,
-            id: row.id,
-            slug: row.slug,
-            title: row.title,
-            isPublished: row.is_published,
-            updatedAt: row.updated_at,
-            createdAt: row.created_at,
-          }));
-        }
-      }
-    } catch (e) {
-      console.warn("Supabase portfolio list failed:", e);
-    }
-  }
-
+  // 1. Immediately read from localStorage (0ms)
   const stored = getLocalItem<PortfolioData[]>(PORTFOLIOS_STORAGE_KEY, []);
-  if (!stored || stored.length === 0) {
-    const initial = [SAMPLE_PORTFOLIO];
-    setLocalItem(PORTFOLIOS_STORAGE_KEY, initial);
-    return initial;
+  if (stored && stored.length > 0) {
+    return stored;
   }
-  return stored;
+
+  const initial = [SAMPLE_PORTFOLIO];
+  setLocalItem(PORTFOLIOS_STORAGE_KEY, initial);
+
+  // 2. Background sync if Supabase configured
+  if (isSupabaseConfigured()) {
+    (async () => {
+      try {
+        const supabase = createClient();
+        if (supabase) {
+          const { data, error } = await supabase
+            .from("portfolios")
+            .select("*")
+            .order("updated_at", { ascending: false });
+
+          if (!error && data && data.length > 0) {
+            const remotePortfolios: PortfolioData[] = data.map((row) => ({
+              ...row.data,
+              id: row.id,
+              slug: row.slug,
+              title: row.title,
+              isPublished: row.is_published,
+              updatedAt: row.updated_at,
+              createdAt: row.created_at,
+            }));
+            setLocalItem(PORTFOLIOS_STORAGE_KEY, remotePortfolios);
+          }
+        }
+      } catch (e) {
+        // Silently catch background errors
+      }
+    })();
+  }
+
+  return initial;
 }
 
 export async function getPortfolioById(id: string): Promise<PortfolioData | null> {
@@ -238,26 +290,54 @@ export async function getPortfolioById(id: string): Promise<PortfolioData | null
     return id === SAMPLE_PORTFOLIO.id ? SAMPLE_PORTFOLIO : null;
   }
 
+  // 1. Check local storage first (0ms latency)
+  const localList = getLocalItem<PortfolioData[]>(PORTFOLIOS_STORAGE_KEY, [SAMPLE_PORTFOLIO]);
+  const localMatch = localList.find((p) => p.id === id);
+  if (localMatch) {
+    return localMatch;
+  }
+
+  if (id === SAMPLE_PORTFOLIO.id || id === "demo-portfolio-1") {
+    return SAMPLE_PORTFOLIO;
+  }
+
+  // 2. Fallback to Supabase with strict 1.5s timeout
   if (isSupabaseConfigured()) {
     try {
       const supabase = createClient();
       if (supabase) {
-        const { data, error } = await supabase
+        const fetchPromise = supabase
           .from("portfolios")
           .select("*")
           .eq("id", id)
           .single();
 
-        if (!error && data) {
-          return {
-            ...data.data,
-            id: data.id,
-            slug: data.slug,
-            title: data.title,
-            isPublished: data.is_published,
-            updatedAt: data.updated_at,
-            createdAt: data.created_at,
+        const timeoutPromise = new Promise<{ data: null; error: string }>((resolve) =>
+          setTimeout(() => resolve({ data: null, error: "timeout" }), 1500)
+        );
+
+        const result = await Promise.race([fetchPromise, timeoutPromise]);
+        // @ts-ignore
+        if (result && !result.error && result.data) {
+          // @ts-ignore
+          const remotePortfolio: PortfolioData = {
+            // @ts-ignore
+            ...result.data.data,
+            // @ts-ignore
+            id: result.data.id,
+            // @ts-ignore
+            slug: result.data.slug,
+            // @ts-ignore
+            title: result.data.title,
+            // @ts-ignore
+            isPublished: result.data.is_published,
+            // @ts-ignore
+            updatedAt: result.data.updated_at,
+            // @ts-ignore
+            createdAt: result.data.created_at,
           };
+          setLocalItem(PORTFOLIOS_STORAGE_KEY, [remotePortfolio, ...localList]);
+          return remotePortfolio;
         }
       }
     } catch (e) {
@@ -265,33 +345,63 @@ export async function getPortfolioById(id: string): Promise<PortfolioData | null
     }
   }
 
-  const list = await getPortfolios();
-  return list.find((p) => p.id === id) || (id === SAMPLE_PORTFOLIO.id ? SAMPLE_PORTFOLIO : null);
+  // Fallback to sample portfolio so editor never hangs
+  return {
+    ...SAMPLE_PORTFOLIO,
+    id,
+    title: "Draft Portfolio",
+  };
 }
 
 export async function getPortfolioBySlug(slug: string): Promise<PortfolioData | null> {
   const normalizedSlug = slug.toLowerCase().trim();
 
+  // 1. Check local storage first
+  const list = getLocalItem<PortfolioData[]>(PORTFOLIOS_STORAGE_KEY, [SAMPLE_PORTFOLIO]);
+  const match = list.find(
+    (p) => p.slug.toLowerCase() === normalizedSlug && p.isPublished
+  );
+  if (match) return match;
+
+  if (normalizedSlug === SAMPLE_PORTFOLIO.slug && SAMPLE_PORTFOLIO.isPublished) {
+    return SAMPLE_PORTFOLIO;
+  }
+
+  // 2. Check Supabase with strict timeout
   if (isSupabaseConfigured()) {
     try {
       const supabase = createClient();
       if (supabase) {
-        const { data, error } = await supabase
+        const fetchPromise = supabase
           .from("portfolios")
           .select("*")
           .eq("slug", normalizedSlug)
           .eq("is_published", true)
           .single();
 
-        if (!error && data) {
+        const timeoutPromise = new Promise<{ data: null; error: string }>((resolve) =>
+          setTimeout(() => resolve({ data: null, error: "timeout" }), 1500)
+        );
+
+        const result = await Promise.race([fetchPromise, timeoutPromise]);
+        // @ts-ignore
+        if (result && !result.error && result.data) {
+          // @ts-ignore
           return {
-            ...data.data,
-            id: data.id,
-            slug: data.slug,
-            title: data.title,
-            isPublished: data.is_published,
-            updatedAt: data.updated_at,
-            createdAt: data.created_at,
+            // @ts-ignore
+            ...result.data.data,
+            // @ts-ignore
+            id: result.data.id,
+            // @ts-ignore
+            slug: result.data.slug,
+            // @ts-ignore
+            title: result.data.title,
+            // @ts-ignore
+            isPublished: result.data.is_published,
+            // @ts-ignore
+            updatedAt: result.data.updated_at,
+            // @ts-ignore
+            createdAt: result.data.created_at,
           };
         }
       }
@@ -300,15 +410,6 @@ export async function getPortfolioBySlug(slug: string): Promise<PortfolioData | 
     }
   }
 
-  const list = await getPortfolios();
-  const match = list.find(
-    (p) => p.slug.toLowerCase() === normalizedSlug && p.isPublished
-  );
-
-  if (match) return match;
-  if (normalizedSlug === SAMPLE_PORTFOLIO.slug && SAMPLE_PORTFOLIO.isPublished) {
-    return SAMPLE_PORTFOLIO;
-  }
   return null;
 }
 
@@ -318,24 +419,7 @@ export async function savePortfolio(portfolio: PortfolioData): Promise<Portfolio
     updatedAt: new Date().toISOString(),
   };
 
-  if (isSupabaseConfigured()) {
-    try {
-      const supabase = createClient();
-      if (supabase) {
-        await supabase.from("portfolios").upsert({
-          id: updatedPortfolio.id,
-          slug: updatedPortfolio.slug,
-          title: updatedPortfolio.title,
-          is_published: updatedPortfolio.isPublished,
-          data: updatedPortfolio,
-          updated_at: updatedPortfolio.updatedAt,
-        });
-      }
-    } catch (e) {
-      console.warn("Supabase portfolio upsert failed:", e);
-    }
-  }
-
+  // 1. Immediately write to localStorage (0ms latency)
   const currentList = getLocalItem<PortfolioData[]>(PORTFOLIOS_STORAGE_KEY, [SAMPLE_PORTFOLIO]);
   const index = currentList.findIndex((p) => p.id === updatedPortfolio.id);
   let updatedList: PortfolioData[];
@@ -348,6 +432,28 @@ export async function savePortfolio(portfolio: PortfolioData): Promise<Portfolio
   }
 
   setLocalItem(PORTFOLIOS_STORAGE_KEY, updatedList);
+
+  // 2. Background sync to Supabase (never blocks UI)
+  if (isSupabaseConfigured()) {
+    (async () => {
+      try {
+        const supabase = createClient();
+        if (supabase) {
+          await supabase.from("portfolios").upsert({
+            id: updatedPortfolio.id,
+            slug: updatedPortfolio.slug,
+            title: updatedPortfolio.title,
+            is_published: updatedPortfolio.isPublished,
+            data: updatedPortfolio,
+            updated_at: updatedPortfolio.updatedAt,
+          });
+        }
+      } catch (e) {
+        // Ignore background sync errors
+      }
+    })();
+  }
+
   return updatedPortfolio;
 }
 

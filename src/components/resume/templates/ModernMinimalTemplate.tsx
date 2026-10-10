@@ -4,6 +4,7 @@ import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import { Linkedin, Github } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 export function ModernMinimalTemplate({ data }: TemplateProps) {
   const { personalInfo, summary, experiences, education, skillCategories, projects, certifications, settings } = data;
@@ -63,13 +64,13 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
               {personalInfo.linkedin && (
                 <div className="flex items-center gap-2 truncate">
                   <Linkedin className="w-3.5 h-3.5 shrink-0" style={{ color: accent }} />
-                  <span className="truncate">LinkedIn Profile</span>
+                  <span className="truncate">{formatDisplayUrl(personalInfo.linkedin)}</span>
                 </div>
               )}
               {personalInfo.github && (
                 <div className="flex items-center gap-2 truncate">
                   <Github className="w-3.5 h-3.5 shrink-0" style={{ color: accent }} />
-                  <span className="truncate">GitHub Profile</span>
+                  <span className="truncate">{formatDisplayUrl(personalInfo.github)}</span>
                 </div>
               )}
             </div>

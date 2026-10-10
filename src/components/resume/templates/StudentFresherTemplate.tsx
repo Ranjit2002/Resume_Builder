@@ -4,6 +4,7 @@ import React from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { Mail, Phone, MapPin, Globe, GraduationCap } from "lucide-react";
 import { Linkedin, Github } from "@/components/ui/Icons";
+import { formatDisplayUrl } from "@/lib/utils/format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -30,7 +31,9 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
             {personalInfo.email && <div className="flex items-center justify-end gap-1.5"><Mail className="w-3 h-3" style={{ color: accent }} />{personalInfo.email}</div>}
             {personalInfo.phone && <div className="flex items-center justify-end gap-1.5"><Phone className="w-3 h-3" style={{ color: accent }} />{personalInfo.phone}</div>}
             {personalInfo.location && <div className="flex items-center justify-end gap-1.5"><MapPin className="w-3 h-3" style={{ color: accent }} />{personalInfo.location}</div>}
-            {personalInfo.github && <div className="flex items-center justify-end gap-1.5"><Github className="w-3 h-3" style={{ color: accent }} />{personalInfo.github.replace(/^https?:\/\//, "")}</div>}
+            {personalInfo.website && <div className="flex items-center justify-end gap-1.5"><Globe className="w-3 h-3" style={{ color: accent }} />{formatDisplayUrl(personalInfo.website)}</div>}
+            {personalInfo.linkedin && <div className="flex items-center justify-end gap-1.5"><Linkedin className="w-3 h-3" style={{ color: accent }} />{formatDisplayUrl(personalInfo.linkedin)}</div>}
+            {personalInfo.github && <div className="flex items-center justify-end gap-1.5"><Github className="w-3 h-3" style={{ color: accent }} />{formatDisplayUrl(personalInfo.github)}</div>}
           </div>
         </div>
       </header>

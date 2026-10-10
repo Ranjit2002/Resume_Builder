@@ -21,46 +21,64 @@ function CreateResumeContent() {
   const [populateSample, setPopulateSample] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
 
+  // Sync selectedTemplate when URL search param changes (e.g. user browses templates and clicks a different one)
+  React.useEffect(() => {
+    setIsCreating(false);
+    const tmplParam = searchParams.get("template") as ResumeTemplateId;
+    if (tmplParam && RESUME_TEMPLATES.some((t) => t.id === tmplParam)) {
+      setSelectedTemplate(tmplParam);
+    }
+  }, [searchParams]);
+
   const handleCreate = async () => {
+    if (isCreating) return;
     setIsCreating(true);
 
-    const newId = `resume-${Date.now()}`;
-    const baseData = populateSample
-      ? SAMPLE_RESUME
-      : {
-          ...SAMPLE_RESUME,
-          personalInfo: {
-            fullName: "",
-            jobTitle: "",
-            email: "",
-            phone: "",
-            location: "",
-          },
-          summary: "",
-          experiences: [],
-          education: [],
-          skillCategories: [],
-          projects: [],
-          certifications: [],
-          awards: [],
-          languages: [],
-          volunteer: [],
-        };
+    try {
+      const newId = `resume-${Date.now()}`;
+      const baseData = populateSample
+        ? SAMPLE_RESUME
+        : {
+            ...SAMPLE_RESUME,
+            personalInfo: {
+              fullName: "",
+              jobTitle: "",
+              email: "",
+              phone: "",
+              location: "",
+            },
+            summary: "",
+            experiences: [],
+            education: [],
+            skillCategories: [],
+            projects: [],
+            certifications: [],
+            awards: [],
+            languages: [],
+            volunteer: [],
+          };
 
-    const newResume: ResumeData = {
-      ...baseData,
-      id: newId,
-      title: title.trim() || "Untitled Resume",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      settings: {
-        ...SAMPLE_RESUME.settings,
-        template: selectedTemplate,
-      },
-    };
+      const newResume: ResumeData = {
+        ...baseData,
+        id: newId,
+        title: title.trim() || "Untitled Resume",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        settings: {
+          ...(baseData.settings || SAMPLE_RESUME.settings),
+          template: selectedTemplate,
+        },
+      };
 
-    await saveResume(newResume);
-    router.push(`/dashboard/resumes/${newId}`);
+      // Save to localStorage immediately (0ms latency)
+      await saveResume(newResume);
+
+      // Navigate instantly to the newly created resume editor
+      router.push(`/dashboard/resumes/${newId}`);
+    } catch (err) {
+      console.error("Error creating resume:", err);
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -69,7 +87,7 @@ function CreateResumeContent() {
         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
           Create New Resume
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
           Choose a starting template and project title. You can customize colors and typography anytime.
         </p>
       </div>
@@ -96,20 +114,20 @@ function CreateResumeContent() {
                   onClick={() => setSelectedTemplate(tmpl.id)}
                   className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                     isSelected
-                      ? "border-indigo-600 dark:border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/40 ring-2 ring-indigo-500/20"
-                      : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700"
+                      ? "border-indigo-600 dark:border-indigo-500 bg-indigo-50/70 dark:bg-indigo-950/60 ring-2 ring-indigo-500/25"
+                      : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:border-slate-300 dark:hover:border-slate-700"
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between mb-1.5">
                     <span className="font-bold text-xs text-slate-900 dark:text-white">
                       {tmpl.name}
                     </span>
                     {tmpl.isPro && <Badge variant="pro" size="sm">PRO</Badge>}
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mb-2">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-2 mb-2.5 leading-relaxed">
                     {tmpl.description}
                   </p>
-                  <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                  <div className="inline-block text-[10px] font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/80 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900/60">
                     {tmpl.category}
                   </div>
                 </div>
@@ -124,7 +142,7 @@ function CreateResumeContent() {
             <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
               Pre-populate with realistic sample data
             </span>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
+            <span className="text-[11px] text-slate-600 dark:text-slate-300 block mt-0.5">
               Provides editable placeholder content so you can preview the layout immediately.
             </span>
           </div>

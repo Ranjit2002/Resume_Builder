@@ -39,8 +39,8 @@ export function CertificationsForm({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Certifications & Licenses</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">Certifications & Licenses</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Validated credentials like AWS, Meta, Scrum, Google Cloud, etc.
           </p>
         </div>
@@ -56,9 +56,9 @@ export function CertificationsForm({
       </div>
 
       {certifications.length === 0 ? (
-        <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50">
-          <Award className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-          <p className="text-sm font-medium text-slate-700">No certifications added</p>
+        <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50/50 dark:bg-slate-900/40">
+          <Award className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No certifications added</p>
           <Button size="sm" onClick={addCert} className="mt-3" leftIcon={<Plus className="w-4 h-4" />}>
             Add Certification
           </Button>
@@ -68,16 +68,16 @@ export function CertificationsForm({
           {certifications.map((c) => (
             <div
               key={c.id}
-              className="p-4 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3"
+              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-3"
             >
-              <div className="flex justify-between items-center border-b border-slate-100 pb-2">
-                <span className="text-xs font-bold text-slate-900">
+              <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   {c.name || "Untitled Credential"}
                 </span>
                 <button
                   type="button"
                   onClick={() => removeCert(c.id)}
-                  className="p-1 text-slate-400 hover:text-rose-500"
+                  className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ResumeData } from "@/lib/types/resume";
 import { saveResume } from "@/lib/store/storage";
 import { exportResumeToPdf, triggerPrintDialog } from "@/lib/utils/pdf";
@@ -19,6 +19,7 @@ import { AiAssistantModal } from "../ai/AiAssistantModal";
 import { UpgradeModal } from "../payment/UpgradeModal";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
+import { ThemeToggle } from "../theme/ThemeToggle";
 import confetti from "canvas-confetti";
 import {
   User,
@@ -48,6 +49,9 @@ interface ResumeEditorProps {
   userPlan?: string;
 }
 
+const MIN_ZOOM = 0.35; // 35% minimum zoom limit prevents document from shrinking excessively
+const MAX_ZOOM = 1.6;  // 160% maximum zoom limit ensures crisp readable zoom without DOM distortion
+
 export function ResumeEditor({
   initialResume,
   userPlan = "free",
@@ -57,8 +61,140 @@ export function ResumeEditor({
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [previewScale, setPreviewScale] = useState<number>(0.9);
+  const [fitScale, setFitScale] = useState<number>(0.9);
+  const [docHeight, setDocHeight] = useState<number>(1123);
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [exportStatusText, setExportStatusText] = useState<string>("");
+
+  const previewPanelRef = useRef<HTMLDivElement>(null);
+  const touchStartDistRef = useRef<number | null>(null);
+  const touchStartScaleRef = useRef<number>(previewScale);
+  const lastTapRef = useRef<number>(0);
+
+  // Keep touchStartScaleRef updated
+  useEffect(() => {
+    touchStartScaleRef.current = previewScale;
+  }, [previewScale]);
+
+  // Dynamically calculate scale so the whole A4 document (794px) fits neatly on screen
+  const calculateFitScale = useCallback(() => {
+    if (!previewPanelRef.current) return 0.9;
+    const containerWidth = previewPanelRef.current.clientWidth;
+    // On small screens use minimal horizontal padding (16px), on desktop use 48px
+    const padding = containerWidth < 640 ? 16 : 48;
+    const availableWidth = Math.max(260, containerWidth - padding);
+    const ideal = parseFloat((availableWidth / 794).toFixed(2));
+    return Math.min(1.0, Math.max(MIN_ZOOM, ideal));
+  }, []);
+
+  const handleResetToFit = useCallback(() => {
+    const fit = calculateFitScale();
+    setPreviewScale(fit);
+  }, [calculateFitScale]);
+
+  // Auto-fit document when switching to preview or when window resizes
+  useEffect(() => {
+    const updateScale = () => {
+      const fit = calculateFitScale();
+      setFitScale(fit);
+      // Auto-fit on mobile or tablet screens
+      if (window.innerWidth < 1024) {
+        setPreviewScale(fit);
+      }
+    };
+
+    const timeout = setTimeout(updateScale, 60);
+    window.addEventListener("resize", updateScale);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("resize", updateScale);
+    };
+  }, [mobileView, calculateFitScale]);
+
+  // Dynamically measure actual rendered document height so multi-page resumes never clip
+  useEffect(() => {
+    const docElem = document.getElementById("resume-document");
+    if (!docElem) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const measured = Math.round(entry.contentRect.height);
+        if (measured > 100) {
+          setDocHeight(Math.max(1123, measured));
+        }
+      }
+    });
+
+    observer.observe(docElem);
+    return () => observer.disconnect();
+  }, [resume]);
+
+  // Double-tap on mobile to toggle between auto-fit and 100% zoom
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1) {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        // Double-tap detected
+        setPreviewScale((prev) => (Math.abs(prev - fitScale) < 0.08 ? 1.0 : fitScale));
+        lastTapRef.current = 0;
+      } else {
+        lastTapRef.current = now;
+      }
+    } else if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      touchStartDistRef.current = dist;
+      touchStartScaleRef.current = previewScale;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length < 2) {
+      touchStartDistRef.current = null;
+    }
+  };
+
+  // Attach non-passive touchmove listener to allow smooth pinch zooming without browser zoom conflict
+  useEffect(() => {
+    const panel = previewPanelRef.current;
+    if (!panel) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && touchStartDistRef.current !== null) {
+        if (e.cancelable) {
+          e.preventDefault(); // Prevents browser from zooming entire website
+        }
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = dist / touchStartDistRef.current;
+        const target = touchStartScaleRef.current * factor;
+        const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, parseFloat(target.toFixed(2))));
+        setPreviewScale(clamped);
+      }
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        const delta = e.deltaY * -0.003;
+        setPreviewScale((prev) =>
+          Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, parseFloat((prev + delta).toFixed(2))))
+        );
+      }
+    };
+
+    panel.addEventListener("touchmove", onTouchMove, { passive: false });
+    panel.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => {
+      panel.removeEventListener("touchmove", onTouchMove);
+      panel.removeEventListener("wheel", onWheel);
+    };
+  }, []);
 
   // AI Modal state
   const [aiModalOpen, setAiModalOpen] = useState(false);
@@ -149,19 +285,19 @@ export function ResumeEditor({
   return (
     <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-slate-950 print:bg-white print:min-h-0 print:block">
       {/* Editor Top Bar */}
-      <header className="editor-header print:hidden sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between shadow-xs">
-        <div className="flex items-center gap-3">
+      <header className="editor-header print:hidden sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-xs gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
           <input
             type="text"
             value={resume.title}
             onChange={(e) =>
               handleUpdate({ ...resume, title: e.target.value })
             }
-            className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 focus:outline-none px-1 py-0.5 max-w-[220px] sm:max-w-md truncate"
+            className="text-sm sm:text-lg font-bold text-slate-900 dark:text-slate-100 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 focus:outline-none px-1 py-0.5 min-w-0 w-full sm:w-auto max-w-[120px] xs:max-w-[170px] sm:max-w-md truncate"
             title="Click to rename resume"
           />
 
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 shrink-0">
             {saveStatus === "saving" && (
               <span className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-medium animate-pulse">
                 <Save className="w-3.5 h-3.5" /> Saving...
@@ -173,44 +309,47 @@ export function ResumeEditor({
               </span>
             )}
             {saveStatus === "unsaved" && (
-              <span className="text-amber-600 dark:text-amber-400 font-medium">Unsaved edits</span>
+              <span className="text-amber-600 dark:text-amber-400 font-medium">Unsaved</span>
             )}
           </div>
         </div>
 
         {/* Right Action buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Mobile Edit/Preview Toggle */}
-          <div className="flex lg:hidden bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+          <div className="flex lg:hidden bg-slate-100 dark:bg-slate-800 p-0.5 sm:p-1 rounded-xl shrink-0">
             <button
               onClick={() => setMobileView("edit")}
               className={cn(
-                "px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1 transition-colors",
+                "px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg flex items-center gap-1 transition-colors",
                 mobileView === "edit"
                   ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
                   : "text-slate-500 dark:text-slate-400"
               )}
             >
-              <Edit3 className="w-3.5 h-3.5" /> Editor
+              <Edit3 className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="inline">Editor</span>
             </button>
             <button
               onClick={() => setMobileView("preview")}
               className={cn(
-                "px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1 transition-colors",
+                "px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg flex items-center gap-1 transition-colors",
                 mobileView === "preview"
                   ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
                   : "text-slate-500 dark:text-slate-400"
               )}
             >
-              <Eye className="w-3.5 h-3.5" /> Preview
+              <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="inline">Preview</span>
             </button>
           </div>
+
+          {/* Theme Mode Toggle */}
+          <ThemeToggle size="sm" />
 
           <Button
             variant="outline"
             size="sm"
             onClick={triggerPrintDialog}
-            className="hidden sm:inline-flex"
+            className="hidden md:inline-flex"
             leftIcon={<Printer className="w-4 h-4" />}
           >
             Print
@@ -221,9 +360,20 @@ export function ResumeEditor({
             size="sm"
             onClick={handleExportPdf}
             isLoading={isExporting}
-            leftIcon={<Download className="w-4 h-4" />}
+            className="px-2.5 sm:px-3 text-xs sm:text-sm whitespace-nowrap shrink-0"
+            leftIcon={<Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           >
-            {isExporting ? exportStatusText || "Exporting..." : "Download PDF"}
+            {isExporting ? (
+              <>
+                <span className="hidden sm:inline">{exportStatusText || "Exporting..."}</span>
+                <span className="sm:hidden">Saving...</span>
+              </>
+            ) : (
+              <>
+                <span className="hidden sm:inline">Download PDF</span>
+                <span className="sm:hidden">PDF</span>
+              </>
+            )}
           </Button>
         </div>
       </header>
@@ -238,7 +388,7 @@ export function ResumeEditor({
           )}
         >
           {/* Resume Score Widget at Top */}
-          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40">
             <ResumeScore
               resume={resume}
               onSelectSection={(secKey) => {
@@ -254,7 +404,7 @@ export function ResumeEditor({
           </div>
 
           {/* Section Navigation Tabs (Horizontal Scrollable) */}
-          <div className="border-b border-slate-200 px-4 py-2.5 flex items-center gap-1 overflow-x-auto no-scrollbar shrink-0 bg-white">
+          <div className="border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center gap-1 overflow-x-auto no-scrollbar shrink-0 bg-white dark:bg-slate-900">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -266,7 +416,7 @@ export function ResumeEditor({
                     "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors",
                     isActive
                       ? "bg-indigo-600 text-white shadow-xs"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                   )}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -406,46 +556,58 @@ export function ResumeEditor({
 
         {/* RIGHT PANEL: Live Interactive Preview */}
         <section
+          ref={previewPanelRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           className={cn(
-            "editor-preview-panel flex-1 bg-slate-200/70 dark:bg-slate-950/80 p-4 sm:p-8 flex flex-col items-center h-[calc(100vh-65px)] overflow-y-auto relative print:bg-white print:p-0 print:m-0 print:h-auto print:overflow-visible print:block print:w-full",
+            "editor-preview-panel flex-1 bg-slate-200/70 dark:bg-slate-950/80 p-2 sm:p-6 flex flex-col items-center h-[calc(100vh-65px)] overflow-y-auto overflow-x-auto relative select-none print:bg-white print:p-0 print:m-0 print:h-auto print:overflow-visible print:block print:w-full touch-pan-x touch-pan-y",
             mobileView === "edit" && "hidden lg:flex print:block"
           )}
         >
           {/* Zoom controls float */}
-          <div className="zoom-controls print:hidden sticky top-2 z-20 mb-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-700 shadow-md flex items-center gap-2 text-xs">
+          <div className="zoom-controls print:hidden sticky top-2 z-20 mb-3 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-300 dark:border-slate-700 shadow-md flex items-center gap-1.5 sm:gap-2 text-xs select-none">
             <button
-              onClick={() => setPreviewScale((prev) => Math.max(0.5, prev - 0.1))}
-              className="p-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded"
-              title="Zoom out"
+              onClick={() => setPreviewScale((prev) => Math.max(MIN_ZOOM, parseFloat((prev - 0.1).toFixed(2))))}
+              disabled={previewScale <= MIN_ZOOM}
+              className="p-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed rounded transition-colors"
+              title={`Zoom out (Min limit: ${Math.round(MIN_ZOOM * 100)}%)`}
+              aria-label="Zoom out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono text-[11px] text-slate-700 dark:text-slate-200 font-bold w-12 text-center">
+            <span className="font-mono text-[11px] text-slate-700 dark:text-slate-200 font-bold min-w-10 text-center">
               {Math.round(previewScale * 100)}%
             </span>
             <button
-              onClick={() => setPreviewScale((prev) => Math.min(1.4, prev + 0.1))}
-              className="p-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded"
-              title="Zoom in"
+              onClick={() => setPreviewScale((prev) => Math.min(MAX_ZOOM, parseFloat((prev + 0.1).toFixed(2))))}
+              disabled={previewScale >= MAX_ZOOM}
+              className="p-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed rounded transition-colors"
+              title={`Zoom in (Max limit: ${Math.round(MAX_ZOOM * 100)}%)`}
+              aria-label="Zoom in"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
+
+            <div className="w-px h-3.5 bg-slate-300 dark:bg-slate-700 mx-0.5" />
+
             <button
-              onClick={() => setPreviewScale(0.9)}
-              className="p-1 text-slate-400 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 ml-1"
-              title="Reset Zoom"
+              onClick={handleResetToFit}
+              className="px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 rounded-md transition-colors flex items-center gap-1"
+              title="Fit entire resume to screen width"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-2.5 h-2.5" />
+              <span>Fit</span>
             </button>
           </div>
 
           {/* Render Resume Document */}
           <div className="w-full flex justify-center pb-12 print:block print:p-0 print:m-0 print:w-full">
             <div
-              className="resume-preview-wrapper print:!transform-none print:!w-full print:!h-auto print:!m-0 print:!p-0"
+              className="resume-preview-wrapper print:!transform-none print:!w-full print:!h-auto print:!m-0 print:!p-0 transition-all duration-75"
               style={{
                 width: `${Math.round(794 * previewScale)}px`,
-                height: `${Math.round(1123 * previewScale)}px`,
+                height: `${Math.round(docHeight * previewScale)}px`,
                 position: "relative",
               }}
             >

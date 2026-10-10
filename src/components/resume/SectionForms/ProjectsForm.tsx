@@ -40,8 +40,8 @@ export function ProjectsForm({ projects, onChange }: ProjectsFormProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Featured Projects</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">Featured Projects</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Showcase your code builds, open source work, or real-world apps.
           </p>
         </div>
@@ -57,9 +57,9 @@ export function ProjectsForm({ projects, onChange }: ProjectsFormProps) {
       </div>
 
       {projects.length === 0 ? (
-        <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50">
-          <FolderGit2 className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-          <p className="text-sm font-medium text-slate-700">No projects added yet</p>
+        <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50/50 dark:bg-slate-900/40">
+          <FolderGit2 className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No projects added yet</p>
           <Button size="sm" onClick={addProject} className="mt-3" leftIcon={<Plus className="w-4 h-4" />}>
             Add First Project
           </Button>
@@ -69,16 +69,16 @@ export function ProjectsForm({ projects, onChange }: ProjectsFormProps) {
           {projects.map((proj, idx) => (
             <div
               key={proj.id}
-              className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3"
+              className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-3"
             >
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span className="text-xs font-bold text-slate-900">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   {proj.title || `Project #${idx + 1}`}
                 </span>
                 <button
                   type="button"
                   onClick={() => removeProject(proj.id)}
-                  className="p-1 text-slate-400 hover:text-rose-500"
+                  className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

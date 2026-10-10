@@ -14,11 +14,14 @@ import {
   Plus,
   Menu,
   X,
-  CreditCard,
   UserCheck,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
+import { ThemeToggle } from "../theme/ThemeToggle";
+import { useTheme } from "../theme/ThemeProvider";
 import { cn } from "@/lib/utils/cn";
 import { getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
 
@@ -26,6 +29,9 @@ export function DashboardNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profile, setProfile] = useState(DEFAULT_USER_PROFILE);
+  const { theme, mounted: themeMounted } = useTheme();
+
+  const isDark = themeMounted ? theme === "dark" : false;
 
   React.useEffect(() => {
     setProfile(getUserProfile());
@@ -52,13 +58,16 @@ export function DashboardNav() {
             Career<span className="text-indigo-600">Craft</span>
           </span>
         </Link>
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-          aria-label="Toggle Dashboard Menu"
-        >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle size="sm" />
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-label="Toggle Dashboard Menu"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Drawer */}
@@ -108,6 +117,22 @@ export function DashboardNav() {
             </div>
 
             <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+              <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={cn(
+                      "w-6 h-6 rounded-lg flex items-center justify-center text-xs transition-colors",
+                      isDark ? "bg-amber-400/10 text-amber-400" : "bg-indigo-50 text-indigo-600"
+                    )}
+                  >
+                    {isDark ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                    {isDark ? "Dark Mode" : "Light Mode"}
+                  </span>
+                </div>
+                <ThemeToggle variant="pill" size="sm" />
+              </div>
               <Link href="/dashboard/resumes/new" onClick={() => setMobileOpen(false)}>
                 <Button variant="primary" className="w-full justify-center" size="sm">
                   <Plus className="w-4 h-4 mr-1" /> New Resume
@@ -200,6 +225,23 @@ export function DashboardNav() {
 
         {/* User / Plan Box */}
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div
+                className={cn(
+                  "w-6 h-6 rounded-lg flex items-center justify-center text-xs transition-colors",
+                  isDark ? "bg-amber-400/10 text-amber-400" : "bg-indigo-50 text-indigo-600"
+                )}
+              >
+                {isDark ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+              </div>
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                {isDark ? "Dark Mode" : "Light Mode"}
+              </span>
+            </div>
+            <ThemeToggle variant="pill" size="sm" />
+          </div>
+
           <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5 overflow-hidden">
               <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center shrink-0 text-xs">

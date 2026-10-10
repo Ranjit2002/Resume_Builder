@@ -19,7 +19,7 @@ export function SummaryForm({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
           Professional Summary / Objective
         </label>
         {onOpenAiHelper && (

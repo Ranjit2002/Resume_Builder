@@ -81,7 +81,7 @@ export function AwardsLanguagesVolunteerForm({
       {/* Languages */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
             Spoken Languages
           </h4>
           <Button type="button" size="sm" variant="outline" onClick={addLanguage} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -90,7 +90,7 @@ export function AwardsLanguagesVolunteerForm({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {languages.map((lang) => (
-            <div key={lang.id} className="flex items-center gap-2 p-2.5 border rounded-xl bg-white shadow-2xs">
+            <div key={lang.id} className="flex items-center gap-2 p-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-2xs">
               <Input
                 placeholder="Language (e.g. English)"
                 value={lang.language}
@@ -99,7 +99,7 @@ export function AwardsLanguagesVolunteerForm({
               <select
                 value={lang.proficiency}
                 onChange={(e) => updateLanguage(lang.id, { proficiency: e.target.value as any })}
-                className="text-xs rounded-xl border border-slate-200 py-2 px-2 bg-white"
+                className="text-xs rounded-xl border border-slate-200 dark:border-slate-700 py-2 px-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
               >
                 <option value="Native">Native</option>
                 <option value="Fluent">Fluent</option>
@@ -110,7 +110,7 @@ export function AwardsLanguagesVolunteerForm({
               <button
                 type="button"
                 onClick={() => removeLanguage(lang.id)}
-                className="p-1 text-slate-400 hover:text-rose-500"
+                className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -120,9 +120,9 @@ export function AwardsLanguagesVolunteerForm({
       </div>
 
       {/* Awards & Honors */}
-      <div className="space-y-3 pt-3 border-t border-slate-100">
+      <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
             Awards & Honors
           </h4>
           <Button type="button" size="sm" variant="outline" onClick={addAward} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -131,10 +131,10 @@ export function AwardsLanguagesVolunteerForm({
         </div>
         <div className="space-y-2.5">
           {awards.map((a) => (
-            <div key={a.id} className="p-3 border rounded-xl bg-white space-y-2">
+            <div key={a.id} className="p-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-slate-900">{a.title || "Untitled Honor"}</span>
-                <button type="button" onClick={() => removeAward(a.id)} className="text-slate-400 hover:text-rose-500">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">{a.title || "Untitled Honor"}</span>
+                <button type="button" onClick={() => removeAward(a.id)} className="text-slate-400 dark:text-slate-500 hover:text-rose-500">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -161,9 +161,9 @@ export function AwardsLanguagesVolunteerForm({
       </div>
 
       {/* Volunteer Leadership */}
-      <div className="space-y-3 pt-3 border-t border-slate-100">
+      <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
             Volunteer & Community
           </h4>
           <Button type="button" size="sm" variant="outline" onClick={addVolunteer} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -172,10 +172,10 @@ export function AwardsLanguagesVolunteerForm({
         </div>
         <div className="space-y-2.5">
           {volunteer.map((v) => (
-            <div key={v.id} className="p-3 border rounded-xl bg-white space-y-2">
+            <div key={v.id} className="p-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-slate-900">{v.role || "Volunteer Activity"}</span>
-                <button type="button" onClick={() => removeVolunteer(v.id)} className="text-slate-400 hover:text-rose-500">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">{v.role || "Volunteer Activity"}</span>
+                <button type="button" onClick={() => removeVolunteer(v.id)} className="text-slate-400 dark:text-slate-500 hover:text-rose-500">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

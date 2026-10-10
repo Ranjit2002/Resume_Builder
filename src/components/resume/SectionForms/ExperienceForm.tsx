@@ -110,10 +110,10 @@ export function ExperienceForm({
       </div>
 
       {experiences.length === 0 ? (
-        <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50/50">
-          <Building className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-          <p className="text-sm font-medium text-slate-700">No experience added yet</p>
-          <p className="text-xs text-slate-500 mt-1 mb-4">
+        <div className="text-center py-8 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50/50 dark:bg-slate-900/50">
+          <Building className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-200">No experience added yet</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">
             Add full-time roles, internships, contracts, or freelancing.
           </p>
           <Button size="sm" onClick={addExperience} leftIcon={<Plus className="w-4 h-4" />}>
@@ -125,15 +125,15 @@ export function ExperienceForm({
           {experiences.map((exp, index) => (
             <div
               key={exp.id}
-              className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-4 relative group"
+              className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-4 relative group"
             >
               {/* Header bar of the item */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-indigo-50 text-indigo-700 font-bold text-xs flex items-center justify-center">
+                  <span className="w-6 h-6 rounded-full bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-bold text-xs flex items-center justify-center">
                     {index + 1}
                   </span>
-                  <span className="text-xs font-bold text-slate-900 truncate max-w-[200px]">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-[200px]">
                     {exp.jobTitle || "Untitled Role"} {exp.company && `at ${exp.company}`}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export function ExperienceForm({
                     type="button"
                     onClick={() => moveItem(index, "up")}
                     disabled={index === 0}
-                    className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-20"
+                    className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-200 disabled:opacity-20"
                     title="Move up"
                   >
                     <ChevronUp className="w-4 h-4" />
@@ -152,7 +152,7 @@ export function ExperienceForm({
                     type="button"
                     onClick={() => moveItem(index, "down")}
                     disabled={index === experiences.length - 1}
-                    className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-20"
+                    className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-200 disabled:opacity-20"
                     title="Move down"
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -217,21 +217,21 @@ export function ExperienceForm({
                       }
                       className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                     />
-                    <span className="text-[11px] text-slate-600">Currently work here</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-300">Currently work here</span>
                   </label>
                 </div>
               </div>
 
               {/* Bullets / Highlights */}
-              <div className="space-y-2 pt-2 border-t border-slate-100">
+              <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
                     Key Achievements & Bullet Points
                   </span>
                   <button
                     type="button"
                     onClick={() => addHighlight(exp.id)}
-                    className="text-xs text-indigo-600 font-semibold hover:underline flex items-center gap-1"
+                    className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" /> Add Bullet
                   </button>
@@ -240,10 +240,10 @@ export function ExperienceForm({
                 <div className="space-y-2">
                   {exp.highlights?.map((highlight, hIndex) => (
                     <div key={hIndex} className="flex items-start gap-2">
-                      <span className="text-slate-400 mt-2 text-xs">•</span>
+                      <span className="text-slate-400 dark:text-slate-500 mt-2 text-xs">•</span>
                       <textarea
                         rows={2}
-                        className="w-full rounded-xl border border-slate-200 px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-2xs transition-colors focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                         placeholder="Action verb + Context + Measurable Result (e.g. Led redesign increasing user retention by 22%)..."
                         value={highlight}
                         onChange={(e) => updateHighlight(exp.id, hIndex, e.target.value)}
@@ -256,7 +256,7 @@ export function ExperienceForm({
                               updateHighlight(exp.id, hIndex, improved)
                             )
                           }
-                          className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg shrink-0 mt-1"
+                          className="p-1.5 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 rounded-lg shrink-0 mt-1"
                           title="Improve with AI"
                         >
                           <Sparkles className="w-4 h-4" />
@@ -265,7 +265,7 @@ export function ExperienceForm({
                       <button
                         type="button"
                         onClick={() => removeHighlight(exp.id, hIndex)}
-                        className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg shrink-0 mt-1"
+                        className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 rounded-lg shrink-0 mt-1"
                         title="Remove bullet"
                       >
                         <Trash2 className="w-4 h-4" />

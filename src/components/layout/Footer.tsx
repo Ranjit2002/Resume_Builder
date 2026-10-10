@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { FileText, Heart, ShieldCheck } from "lucide-react";
 import { Github, Twitter, Linkedin } from "@/components/ui/Icons";
+import { ThemeToggle } from "../theme/ThemeToggle";
 
 export function Footer() {
   return (
@@ -138,6 +139,10 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 dark:text-slate-500">
           <p>© 2026 CareerCraft SaaS. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span className="text-slate-500 dark:text-slate-400 font-medium">Appearance:</span>
+            <ThemeToggle size="sm" variant="button" />
+          </div>
           <p className="flex items-center gap-1">
             Engineered with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for career builders worldwide.
           </p>

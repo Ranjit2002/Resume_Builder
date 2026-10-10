@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
+import { ThemeToggle } from "../theme/ThemeToggle";
 import {
   FileText,
   Globe,
@@ -39,10 +39,10 @@ export function Navbar() {
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                Career<span className="text-indigo-600">Craft</span>
+              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
               </span>
-              <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase -mt-1">
+              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 tracking-wider uppercase -mt-1">
                 Resume & Portfolio SaaS
               </span>
             </div>
@@ -60,11 +60,11 @@ export function Navbar() {
                   className={cn(
                     "flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
                     isActive
-                      ? "text-indigo-600 bg-indigo-50/70"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50/70 dark:bg-indigo-950/60 font-semibold"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60"
                   )}
                 >
-                  <Icon className="w-4 h-4 text-slate-400" />
+                  <Icon className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <span>{link.label}</span>
                 </Link>
               );
@@ -73,6 +73,9 @@ export function Navbar() {
 
           {/* Right Action Buttons */}
           <div className="hidden md:flex items-center gap-2.5">
+            {/* Dark / Light Mode Switcher */}
+            <ThemeToggle size="md" />
+
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" leftIcon={<LayoutDashboard className="w-4 h-4" />}>
                 Dashboard
@@ -94,8 +97,10 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button + Quick Theme Switch */}
           <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle size="sm" />
+
             <Link href="/dashboard/resumes/new">
               <Button variant="primary" size="sm">
                 Create
@@ -103,13 +108,13 @@ export function Navbar() {
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none"
+              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-slate-800" />
+                <X className="w-6 h-6 text-slate-800 dark:text-slate-200" />
               ) : (
-                <Menu className="w-6 h-6 text-slate-800" />
+                <Menu className="w-6 h-6 text-slate-800 dark:text-slate-200" />
               )}
             </button>
           </div>
@@ -118,7 +123,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-4">
+        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top-4">
           <div className="space-y-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -134,6 +139,14 @@ export function Navbar() {
                 </Link>
               );
             })}
+          </div>
+
+          {/* Mobile Theme Preference Row */}
+          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+              Appearance Theme
+            </span>
+            <ThemeToggle variant="pill" />
           </div>
 
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">

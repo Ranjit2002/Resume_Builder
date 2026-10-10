@@ -7,10 +7,12 @@ import { PORTFOLIO_TEMPLATES } from "@/lib/constants/templates";
 import { slugify, isValidSlug } from "@/lib/utils/slug";
 import { PortfolioTemplateDispatcher } from "./templates/PortfolioTemplateDispatcher";
 import { Input } from "@/components/ui/Input";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Switch } from "@/components/ui/Switch";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import confetti from "canvas-confetti";
 import {
   Globe,
@@ -143,21 +145,21 @@ export function PortfolioEditor({
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-100">
+    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-slate-950 transition-colors">
       {/* Top Navbar */}
-      <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between shadow-xs">
-        <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-xs transition-colors gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
           <input
             type="text"
             value={portfolio.title}
             onChange={(e) =>
               handleUpdate({ ...portfolio, title: e.target.value })
             }
-            className="text-base sm:text-lg font-bold text-slate-900 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 focus:outline-none px-1 py-0.5 max-w-[200px] sm:max-w-md truncate"
+            className="text-sm sm:text-lg font-bold text-slate-900 dark:text-white bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none px-1 py-0.5 min-w-0 w-full sm:w-auto max-w-[120px] xs:max-w-[170px] sm:max-w-md truncate"
             title="Click to rename portfolio"
           />
 
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 shrink-0">
             {portfolio.isPublished ? (
               <Badge variant="success" size="sm">
                 ● Live Public
@@ -169,12 +171,12 @@ export function PortfolioEditor({
             )}
 
             {saveStatus === "saving" && (
-              <span className="text-xs text-indigo-600 flex items-center gap-1 font-medium">
+              <span className="text-xs text-indigo-600 dark:text-indigo-400 flex items-center gap-1 font-medium">
                 <Save className="w-3.5 h-3.5" /> Saving...
               </span>
             )}
             {saveStatus === "saved" && (
-              <span className="text-xs text-emerald-600 flex items-center gap-1 font-medium">
+              <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium">
                 <CheckCircle className="w-3.5 h-3.5" /> Saved
               </span>
             )}
@@ -182,38 +184,42 @@ export function PortfolioEditor({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Mobile Edit/Preview Toggle */}
-          <div className="flex lg:hidden bg-slate-100 p-1 rounded-xl">
+          <div className="flex lg:hidden bg-slate-100 dark:bg-slate-800 p-0.5 sm:p-1 rounded-xl shrink-0">
             <button
               onClick={() => setMobileView("edit")}
               className={cn(
-                "px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1",
+                "px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg flex items-center gap-1",
                 mobileView === "edit"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500"
+                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
+                  : "text-slate-500 dark:text-slate-400"
               )}
             >
-              <Edit3 className="w-3.5 h-3.5" /> Edit
+              <Edit3 className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="inline">Edit</span>
             </button>
             <button
               onClick={() => setMobileView("preview")}
               className={cn(
-                "px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1",
+                "px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-lg flex items-center gap-1",
                 mobileView === "preview"
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-500"
+                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
+                  : "text-slate-500 dark:text-slate-400"
               )}
             >
-              <Eye className="w-3.5 h-3.5" /> Preview
+              <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="inline">Preview</span>
             </button>
           </div>
+
+          {/* Theme Mode Toggle */}
+          <ThemeToggle size="sm" />
 
           {portfolio.isPublished && (
             <Button
               variant="outline"
               size="sm"
               onClick={handleCopyLink}
+              className="hidden sm:inline-flex"
               leftIcon={copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
             >
               {copiedLink ? "Copied!" : "Copy URL"}
@@ -224,9 +230,20 @@ export function PortfolioEditor({
             variant={portfolio.isPublished ? "outline" : "primary"}
             size="sm"
             onClick={() => handlePublishToggle(!portfolio.isPublished)}
-            leftIcon={<Globe className="w-4 h-4" />}
+            className="px-2.5 sm:px-3 text-xs sm:text-sm whitespace-nowrap shrink-0"
+            leftIcon={<Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           >
-            {portfolio.isPublished ? "Unpublish" : "Publish Site"}
+            {portfolio.isPublished ? (
+              <>
+                <span className="hidden sm:inline">Unpublish</span>
+                <span className="sm:hidden">Unpub</span>
+              </>
+            ) : (
+              <>
+                <span className="hidden sm:inline">Publish Site</span>
+                <span className="sm:hidden">Publish</span>
+              </>
+            )}
           </Button>
 
           {portfolio.isPublished && (
@@ -249,16 +266,16 @@ export function PortfolioEditor({
       </header>
 
       {/* Main Two-Panel Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-50 dark:bg-slate-950">
         {/* LEFT PANEL: Portfolio Editor Form */}
         <section
           className={cn(
-            "w-full lg:w-1/2 lg:max-w-2xl bg-white border-r border-slate-200/80 flex flex-col h-[calc(100vh-65px)] overflow-hidden",
+            "w-full lg:w-1/2 lg:max-w-2xl bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex flex-col h-[calc(100vh-65px)] overflow-hidden transition-colors",
             mobileView === "preview" && "hidden lg:flex"
           )}
         >
           {/* Section Tabs */}
-          <div className="border-b border-slate-200 px-4 py-2.5 flex items-center gap-1 overflow-x-auto no-scrollbar shrink-0 bg-white">
+          <div className="border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center gap-1 overflow-x-auto no-scrollbar shrink-0 bg-white dark:bg-slate-900 transition-colors">
             {[
               { id: "general", label: "Profile & Bio", icon: User },
               { id: "projects", label: "Featured Projects", icon: FolderGit2 },
@@ -275,7 +292,7 @@ export function PortfolioEditor({
                     "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors",
                     isActive
                       ? "bg-indigo-600 text-white shadow-xs"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                   )}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -338,18 +355,19 @@ export function PortfolioEditor({
                   />
                 </div>
 
-                <Input
-                  label="Avatar / Profile Picture URL"
-                  placeholder="https://images.unsplash.com/..."
+                <ImageUpload
+                  label="Avatar / Profile Picture"
+                  placeholderUrl="https://images.unsplash.com/..."
                   value={portfolio.avatarUrl || ""}
-                  onChange={(e) =>
-                    handleUpdate({ ...portfolio, avatarUrl: e.target.value })
+                  onChange={(url) =>
+                    handleUpdate({ ...portfolio, avatarUrl: url })
                   }
+                  helperText="Upload an avatar from your PC/mobile or enter a direct image URL"
                 />
 
                 {/* Social links */}
-                <div className="pt-2 border-t border-slate-100 space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                     Contact & Social Handles
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -388,7 +406,7 @@ export function PortfolioEditor({
                 </div>
 
                 {/* Skills tags */}
-                <div className="pt-2 border-t border-slate-100 space-y-2">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
                   <Input
                     label="Skills & Tech Stack (comma separated)"
                     placeholder="TypeScript, React, Next.js, Node.js, PostgreSQL, Docker"
@@ -412,10 +430,10 @@ export function PortfolioEditor({
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-bold text-slate-800">
+                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                       Portfolio Showcase Projects
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       Highlight your best work with live demo links and screenshots.
                     </p>
                   </div>
@@ -431,8 +449,8 @@ export function PortfolioEditor({
                 </div>
 
                 {(!portfolio.projects || portfolio.projects.length === 0) ? (
-                  <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50">
-                    <p className="text-xs text-slate-500 mb-3">No showcase projects added.</p>
+                  <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50 dark:bg-slate-900/50">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">No showcase projects added.</p>
                     <Button size="sm" onClick={addProject} leftIcon={<Plus className="w-4 h-4" />}>
                       Add First Project
                     </Button>
@@ -442,16 +460,16 @@ export function PortfolioEditor({
                     {portfolio.projects.map((proj, idx) => (
                       <div
                         key={proj.id}
-                        className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3"
+                        className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-3"
                       >
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                          <span className="text-xs font-bold text-slate-900">
+                        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white">
                             {proj.title || `Project #${idx + 1}`}
                           </span>
                           <button
                             type="button"
                             onClick={() => removeProject(proj.id)}
-                            className="p-1 text-slate-400 hover:text-rose-500"
+                            className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -533,17 +551,17 @@ export function PortfolioEditor({
             {/* Domain & Publish Tab */}
             {activeTab === "publish" && (
               <div className="space-y-6">
-                <div className="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-3">
-                  <h4 className="text-sm font-bold text-indigo-950 flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-indigo-600" />
+                <div className="p-5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 space-y-3">
+                  <h4 className="text-sm font-bold text-indigo-950 dark:text-indigo-200 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                     Public Portfolio URL & Slug
                   </h4>
-                  <p className="text-xs text-indigo-800 leading-relaxed">
+                  <p className="text-xs text-indigo-800 dark:text-indigo-300 leading-relaxed">
                     Your portfolio is accessible publicly at your unique username or slug.
                   </p>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-slate-500 bg-white px-3 py-2 rounded-xl border border-slate-200 shrink-0">
+                    <span className="text-xs font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shrink-0">
                       /portfolio/
                     </span>
                     <input
@@ -551,7 +569,7 @@ export function PortfolioEditor({
                       value={portfolio.slug}
                       onChange={(e) => handleSlugChange(e.target.value)}
                       placeholder="your-name"
-                      className="w-full text-xs font-mono rounded-xl border border-slate-200 px-3.5 py-2 text-slate-900 bg-white focus:outline-none focus:border-indigo-500"
+                      className="w-full text-xs font-mono rounded-xl border border-slate-200 dark:border-slate-700 px-3.5 py-2 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-900 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400"
                     />
                   </div>
 
@@ -561,13 +579,13 @@ export function PortfolioEditor({
                 </div>
 
                 {/* Publish Switch */}
-                <div className="p-5 rounded-2xl border border-slate-200 bg-white space-y-4">
+                <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                         Publication Status
                       </h4>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
                         {portfolio.isPublished
                           ? "Your website is currently live and visible to the world."
                           : "Your website is in draft mode and only visible to you."}
@@ -580,15 +598,15 @@ export function PortfolioEditor({
                   </div>
 
                   {portfolio.isPublished && (
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-xs font-mono text-slate-600">
+                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <span className="text-xs font-mono text-slate-600 dark:text-slate-400">
                         Live at: /portfolio/{portfolio.slug}
                       </span>
                       <a
                         href={`/portfolio/${portfolio.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                        className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
                       >
                         Visit Page <ExternalLink className="w-3.5 h-3.5" />
                       </a>
@@ -598,7 +616,7 @@ export function PortfolioEditor({
 
                 {/* SEO Settings */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                     SEO & Meta Tags
                   </h4>
                   <Input
@@ -629,7 +647,7 @@ export function PortfolioEditor({
             {activeTab === "theme" && (
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-800">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                     Select Portfolio Theme
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -649,12 +667,12 @@ export function PortfolioEditor({
                           }
                           className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                             isSelected
-                              ? "border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-500/20"
-                              : "border-slate-200 bg-white hover:border-slate-300"
+                              ? "border-indigo-600 dark:border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/40 ring-2 ring-indigo-500/20"
+                              : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700"
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-bold text-xs text-slate-900">
+                            <h4 className="font-bold text-xs text-slate-900 dark:text-white">
                               {tmpl.name}
                             </h4>
                             {tmpl.badge && (
@@ -663,10 +681,10 @@ export function PortfolioEditor({
                               </Badge>
                             )}
                           </div>
-                          <p className="text-[11px] text-slate-500 mb-2">
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-2">
                             {tmpl.description}
                           </p>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-slate-400 dark:text-slate-500">
                             Best for: {tmpl.bestFor}
                           </div>
                         </div>
@@ -699,11 +717,11 @@ export function PortfolioEditor({
         {/* RIGHT PANEL: Live Preview of Selected Portfolio Theme */}
         <section
           className={cn(
-            "flex-1 bg-slate-900 p-2 sm:p-6 flex flex-col h-[calc(100vh-65px)] overflow-y-auto relative",
+            "flex-1 bg-slate-100 dark:bg-slate-950/80 p-2 sm:p-6 flex flex-col h-[calc(100vh-65px)] overflow-y-auto relative transition-colors",
             mobileView === "edit" && "hidden lg:flex"
           )}
         >
-          <div className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-950">
+          <div className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-950 transition-colors">
             <PortfolioTemplateDispatcher data={portfolio} />
           </div>
         </section>

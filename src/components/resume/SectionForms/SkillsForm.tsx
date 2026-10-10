@@ -85,8 +85,8 @@ export function SkillsForm({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Skills & Competencies</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">Skills & Competencies</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Organize skills by category for optimal ATS keyword scanning.
           </p>
         </div>
@@ -115,8 +115,8 @@ export function SkillsForm({
       </div>
 
       {categories.length === 0 ? (
-        <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50">
-          <p className="text-xs text-slate-500 mb-3">No skill groups configured.</p>
+        <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50/50 dark:bg-slate-900/40">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">No skill groups configured.</p>
           <Button size="sm" onClick={addCategory} leftIcon={<Plus className="w-4 h-4" />}>
             Create Skill Group
           </Button>
@@ -126,12 +126,12 @@ export function SkillsForm({
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="p-4 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3"
+              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-3"
             >
-              <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
+              <div className="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-2">
                 <input
                   type="text"
-                  className="font-bold text-xs uppercase tracking-wider text-slate-900 bg-transparent border-none focus:outline-none focus:ring-0 w-full"
+                  className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white bg-transparent border-none focus:outline-none focus:ring-0 w-full"
                   value={cat.categoryName}
                   onChange={(e) => updateCategoryName(cat.id, e.target.value)}
                   placeholder="Group Name (e.g. Languages, Cloud, Frameworks)"
@@ -139,7 +139,7 @@ export function SkillsForm({
                 <button
                   type="button"
                   onClick={() => removeCategory(cat.id)}
-                  className="p-1 text-slate-400 hover:text-rose-500 shrink-0"
+                  className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500 shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -150,13 +150,13 @@ export function SkillsForm({
                 {cat.skills?.map((skill, sIdx) => (
                   <span
                     key={sIdx}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700"
                   >
                     <span>{skill}</span>
                     <button
                       type="button"
                       onClick={() => removeSkillFromCategory(cat.id, skill)}
-                      className="text-slate-400 hover:text-slate-700"
+                      className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -182,7 +182,7 @@ export function SkillsForm({
                       addSkillToCategory(cat.id, newSkillInputs[cat.id] || "");
                     }
                   }}
-                  className="w-full text-xs rounded-xl border border-slate-200 px-3 py-1.5 focus:border-indigo-500 focus:outline-none"
+                  className="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3 py-1.5 focus:border-indigo-500 focus:outline-none"
                 />
                 <Button
                   type="button"
@@ -201,7 +201,7 @@ export function SkillsForm({
 
           {/* Quick presets footer */}
           <div className="pt-2">
-            <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
+            <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-400 block mb-1.5">
               Popular skills to add:
             </span>
             <div className="flex flex-wrap gap-1">
@@ -214,7 +214,7 @@ export function SkillsForm({
                       addSkillToCategory(categories[0].id, preset);
                     }
                   }}
-                  className="text-[10px] bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 border border-slate-200 px-2 py-0.5 rounded transition-colors"
+                  className="text-[10px] bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded transition-colors"
                 >
                   + {preset}
                 </button>

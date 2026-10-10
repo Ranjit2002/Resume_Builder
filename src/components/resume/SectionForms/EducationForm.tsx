@@ -40,8 +40,8 @@ export function EducationForm({ education, onChange }: EducationFormProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Education</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">Education</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Degrees, certifications, bootcamps, and academic credentials.
           </p>
         </div>
@@ -57,9 +57,9 @@ export function EducationForm({ education, onChange }: EducationFormProps) {
       </div>
 
       {education.length === 0 ? (
-        <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl p-6 bg-slate-50/50">
-          <GraduationCap className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-          <p className="text-sm font-medium text-slate-700">No education entries yet</p>
+        <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 bg-slate-50/50 dark:bg-slate-900/40">
+          <GraduationCap className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No education entries yet</p>
           <Button size="sm" onClick={addEducation} className="mt-3" leftIcon={<Plus className="w-4 h-4" />}>
             Add Education
           </Button>
@@ -69,16 +69,16 @@ export function EducationForm({ education, onChange }: EducationFormProps) {
           {education.map((edu, idx) => (
             <div
               key={edu.id}
-              className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-2xs space-y-3 relative"
+              className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs space-y-3 relative"
             >
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                <span className="text-xs font-bold text-slate-900">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   {edu.degree || `Education #${idx + 1}`}
                 </span>
                 <button
                   type="button"
                   onClick={() => removeItem(edu.id)}
-                  className="p-1 text-slate-400 hover:text-rose-500"
+                  className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-500"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

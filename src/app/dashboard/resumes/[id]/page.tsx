@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
-import { getResumeById, getUserProfile } from "@/lib/store/storage";
+import { getResumeById, getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
 import { ResumeData } from "@/lib/types/resume";
+import { UserProfile } from "@/lib/types/subscription";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +16,7 @@ function ResumeEditorInner() {
 
   const [resume, setResume] = useState<ResumeData | null>(null);
   const [loading, setLoading] = useState(true);
-  const profile = getUserProfile();
+  const [profile, setProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE);
 
   useEffect(() => {
     if (!id) return;
@@ -24,6 +25,7 @@ function ResumeEditorInner() {
       if (found) {
         setResume(found);
       }
+      setProfile(getUserProfile());
       setLoading(false);
     };
     fetchResume();

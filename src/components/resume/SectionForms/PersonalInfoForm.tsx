@@ -3,7 +3,8 @@
 import React from "react";
 import { PersonalInfo } from "@/lib/types/resume";
 import { Input } from "@/components/ui/Input";
-import { User, Mail, Phone, MapPin, Globe, Image as ImageIcon } from "lucide-react";
+import { ImageUpload } from "@/components/ui/ImageUpload";
+import { User, Mail, Phone, MapPin, Globe } from "lucide-react";
 import { Linkedin, Github } from "@/components/ui/Icons";
 
 interface PersonalInfoFormProps {
@@ -76,20 +77,21 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
         <Input
           label="Portfolio / Website URL"
           placeholder="https://myportfolio.com"
           value={data.website || ""}
           onChange={(e) => updateField("website", e.target.value)}
           leftIcon={<Globe className="w-4 h-4" />}
+          helperText="Optional link to your portfolio or personal blog"
         />
-        <Input
-          label="Profile Photo URL (Optional)"
-          placeholder="https://example.com/avatar.jpg"
+        <ImageUpload
+          label="Profile Photo (Optional)"
           value={data.photoUrl || ""}
-          onChange={(e) => updateField("photoUrl", e.target.value)}
-          leftIcon={<ImageIcon className="w-4 h-4" />}
+          onChange={(url) => updateField("photoUrl", url)}
+          placeholderUrl="https://example.com/avatar.jpg"
+          helperText="Upload from your PC/mobile or enter a direct image URL"
         />
       </div>
     </div>

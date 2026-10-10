@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
-import { getPortfolioById, getUserProfile } from "@/lib/store/storage";
+import { getPortfolioById, getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
 import { PortfolioData } from "@/lib/types/portfolio";
+import { UserProfile } from "@/lib/types/subscription";
 import { PortfolioEditor } from "@/components/portfolio/PortfolioEditor";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +16,7 @@ function PortfolioEditorInner() {
 
   const [portfolio, setPortfolio] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
-  const profile = getUserProfile();
+  const [profile, setProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE);
 
   useEffect(() => {
     if (!id) return;
@@ -24,6 +25,7 @@ function PortfolioEditorInner() {
       if (found) {
         setPortfolio(found);
       }
+      setProfile(getUserProfile());
       setLoading(false);
     };
     fetchPortfolio();

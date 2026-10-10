@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getUserProfile, saveUserProfile } from "@/lib/store/storage";
+import { getUserProfile, saveUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { UserProfile } from "@/lib/types/subscription";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { UpgradeModal } from "@/components/payment/UpgradeModal";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import { cn } from "@/lib/utils/cn";
 import {
   User,
   ShieldCheck,
@@ -18,16 +20,22 @@ import {
   CheckCircle2,
   AlertCircle,
   Save,
+  Palette,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 export default function SettingsPage() {
-  const [profile, setProfile] = useState<UserProfile>(getUserProfile());
+  const [profile, setProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
+    setMounted(true);
     const p = getUserProfile();
     setProfile(p);
     setFullName(p.fullName || "");
@@ -53,6 +61,76 @@ export default function SettingsPage() {
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
           Manage your personal profile, subscription tier, and system integrations.
         </p>
+      </div>
+
+      {/* Appearance & Theme Preferences */}
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Palette className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Appearance & Theme
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Customize CareerCraft's workspace appearance to reduce eye strain.
+              </p>
+            </div>
+          </div>
+          <Badge variant={mounted && theme === "dark" ? "pro" : "default"} size="sm">
+            {mounted && theme === "dark" ? "DARK MODE" : "LIGHT MODE"}
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={() => setTheme("light")}
+            className={cn(
+              "p-4 rounded-2xl border text-left transition-all duration-200 flex items-start gap-3.5 cursor-pointer",
+              (!mounted || theme === "light")
+                ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 ring-2 ring-indigo-600/20"
+                : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30"
+            )}
+          >
+            <div className="p-2.5 rounded-xl bg-amber-100 text-amber-600 shrink-0">
+              <Sun className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-sm text-slate-900 dark:text-white">Light Mode</span>
+                {(!mounted || theme === "light") && <CheckCircle2 className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                Bright, crisp contrast optimized for daytime reading, writing, and PDF reviewing.
+              </p>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setTheme("dark")}
+            className={cn(
+              "p-4 rounded-2xl border text-left transition-all duration-200 flex items-start gap-3.5 cursor-pointer",
+              (mounted && theme === "dark")
+                ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 ring-2 ring-indigo-600/20"
+                : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30"
+            )}
+          >
+            <div className="p-2.5 rounded-xl bg-indigo-950 text-indigo-300 shrink-0 border border-indigo-800">
+              <Moon className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-sm text-slate-900 dark:text-white">Dark Mode</span>
+                {mounted && theme === "dark" && <CheckCircle2 className="w-4 h-4 text-indigo-400" />}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                Sleek, low-glare deep dark theme tailored for nighttime drafting and focused editing.
+              </p>
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Profile Form */}
@@ -109,31 +187,31 @@ export default function SettingsPage() {
             </h2>
           </div>
           <Badge
-            variant={profile.subscription?.plan === "pro" ? "pro" : "default"}
+            variant={mounted && profile.subscription?.plan === "pro" ? "pro" : "default"}
             size="md"
           >
-            {profile.subscription?.plan?.toUpperCase()} PLAN
+            {(mounted ? profile.subscription?.plan : "free")?.toUpperCase()} PLAN
           </Badge>
         </div>
 
         <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h3 className="font-bold text-sm text-slate-900 dark:text-white capitalize">
-              {profile.subscription?.plan} Membership
+              {(mounted ? profile.subscription?.plan : "free")} Membership
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {profile.subscription?.plan === "pro"
+              {(mounted && profile.subscription?.plan === "pro")
                 ? "Full access to all 7 resume templates, 4 portfolio themes, and AI writing assistance."
                 : "Basic access with up to 2 resumes and 1 public portfolio."}
             </p>
           </div>
 
           <Button
-            variant={profile.subscription?.plan === "pro" ? "outline" : "primary"}
+            variant={mounted && profile.subscription?.plan === "pro" ? "outline" : "primary"}
             size="sm"
             onClick={() => setUpgradeModalOpen(true)}
           >
-            {profile.subscription?.plan === "pro"
+            {mounted && profile.subscription?.plan === "pro"
               ? "Change Subscription"
               : "Upgrade to Pro ($12/mo)"}
           </Button>

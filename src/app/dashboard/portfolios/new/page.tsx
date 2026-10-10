@@ -24,6 +24,14 @@ function CreatePortfolioContent() {
   const [isCreating, setIsCreating] = useState(false);
   const [slugError, setSlugError] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    setIsCreating(false);
+    const tmplParam = searchParams.get("template") as PortfolioTemplateId;
+    if (tmplParam && PORTFOLIO_TEMPLATES.some((t) => t.id === tmplParam)) {
+      setSelectedTemplate(tmplParam);
+    }
+  }, [searchParams]);
+
   const handleSlugInput = (val: string) => {
     const s = slugify(val);
     setSlug(s);
@@ -40,38 +48,45 @@ function CreatePortfolioContent() {
       return;
     }
 
+    if (isCreating) return;
     setIsCreating(true);
 
-    const newId = `portfolio-${Date.now()}`;
-    const baseData = populateSample
-      ? SAMPLE_PORTFOLIO
-      : {
-          ...SAMPLE_PORTFOLIO,
-          fullName: "Your Name",
-          headline: "Professional Headline",
-          about: "",
-          skills: [],
-          projects: [],
-          experiences: [],
-          education: [],
-        };
+    try {
+      const newId = `portfolio-${Date.now()}`;
+      const baseData = populateSample
+        ? SAMPLE_PORTFOLIO
+        : {
+            ...SAMPLE_PORTFOLIO,
+            fullName: "Your Name",
+            headline: "Professional Headline",
+            about: "",
+            skills: [],
+            projects: [],
+            experiences: [],
+            education: [],
+          };
 
-    const newPortfolio: PortfolioData = {
-      ...baseData,
-      id: newId,
-      title: title.trim() || "My Portfolio",
-      slug: slug.trim(),
-      isPublished: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      settings: {
-        ...SAMPLE_PORTFOLIO.settings,
-        template: selectedTemplate,
-      },
-    };
+      const newPortfolio: PortfolioData = {
+        ...baseData,
+        id: newId,
+        title: title.trim() || "My Portfolio",
+        slug: slug.trim(),
+        isPublished: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        settings: {
+          ...SAMPLE_PORTFOLIO.settings,
+          template: selectedTemplate,
+        },
+      };
 
-    await savePortfolio(newPortfolio);
-    router.push(`/dashboard/portfolios/${newId}`);
+      // Save to localStorage immediately (0ms)
+      await savePortfolio(newPortfolio);
+      router.push(`/dashboard/portfolios/${newId}`);
+    } catch (err) {
+      console.error("Error creating portfolio:", err);
+      setIsCreating(false);
+    }
   };
 
   return (
