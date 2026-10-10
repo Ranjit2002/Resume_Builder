@@ -2,14 +2,11 @@
   "name": "career-craft",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Ranjit2002.github.io/Resume_Builder",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "predeploy": "npm run build",
-    "deploy": "next build && gh-pages -d out"
+    "lint": "eslint"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -36,7 +33,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
-    "gh-pages": "^6.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
