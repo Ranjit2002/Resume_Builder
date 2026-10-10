@@ -440,14 +440,28 @@ export function ResumeEditor({
           </div>
 
           {/* Render Resume Document */}
-          <div
-            className="transition-all print:max-w-none print:w-full print:m-0 flex justify-center pb-12"
-            style={{
-              width: `${Math.round(794 * previewScale)}px`,
-              minHeight: `${Math.round(1123 * previewScale)}px`,
-            }}
-          >
-            <ResumeTemplateDispatcher data={resume} scale={previewScale} />
+          <div className="w-full flex justify-center pb-12 print:block print:p-0 print:m-0 print:w-full">
+            <div
+              className="resume-preview-wrapper print:!transform-none print:!w-full print:!h-auto print:!m-0 print:!p-0"
+              style={{
+                width: `${Math.round(794 * previewScale)}px`,
+                height: `${Math.round(1123 * previewScale)}px`,
+                position: "relative",
+              }}
+            >
+              <div
+                className="resume-scale-wrapper print:!transform-none print:!w-full print:!min-w-0 print:!max-w-none print:!m-0"
+                style={{
+                  width: "794px",
+                  minWidth: "794px",
+                  maxWidth: "794px",
+                  transform: `scale(${previewScale})`,
+                  transformOrigin: "top left",
+                }}
+              >
+                <ResumeTemplateDispatcher data={resume} scale={1} />
+              </div>
+            </div>
           </div>
         </section>
       </div>

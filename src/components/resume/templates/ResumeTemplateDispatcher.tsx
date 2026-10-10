@@ -60,7 +60,7 @@ export function ResumeTemplateDispatcher({ data, scale = 1 }: DispatcherProps) {
     <div
       id="resume-document"
       className={cn(
-        "origin-top transition-transform duration-200 bg-white rounded-md shadow-xl border border-slate-200/90 overflow-hidden print:shadow-none print:border-none print:m-0 print:w-full print:transform-none print:overflow-visible box-border",
+        "bg-white rounded-md shadow-xl border border-slate-200/90 print:shadow-none print:border-none print:m-0 print:p-0 print:w-full print:min-w-0 print:max-w-none print:transform-none print:overflow-visible box-border",
         fontClass,
         spacingClass
       )}
@@ -70,7 +70,7 @@ export function ResumeTemplateDispatcher({ data, scale = 1 }: DispatcherProps) {
         maxWidth: "794px",
         minHeight: "1123px",
         transform: scale !== 1 ? `scale(${scale})` : undefined,
-        transformOrigin: "top center",
+        transformOrigin: "top left",
       }}
     >
       {renderSelectedTemplate()}

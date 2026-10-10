@@ -10,9 +10,9 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#4f46e5";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs w-full min-h-[1123px] flex flex-row box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs w-full max-w-full min-h-[1123px] flex flex-row box-border">
       {/* Left Sidebar Accent Rail */}
-      <aside className="w-72 bg-slate-50 border-r border-slate-200/80 p-7 shrink-0 flex flex-col justify-between">
+      <aside className="w-64 bg-slate-50 border-r border-slate-200/80 p-6 shrink-0 flex flex-col justify-between box-border">
         <div className="space-y-6">
           {/* Avatar / Photo if enabled */}
           {settings.showPhoto && personalInfo.photoUrl && (
@@ -133,7 +133,7 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
       </aside>
 
       {/* Right Column / Body */}
-      <main className="flex-1 p-7 space-y-6 min-w-0">
+      <main className="flex-1 p-6 space-y-6 min-w-0 box-border">
         {/* Name and Title */}
         <header className="border-b border-slate-100 pb-5">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
@@ -152,7 +152,7 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
               Profile Summary
             </h2>
-            <p className="text-slate-700 leading-relaxed text-xs">{summary}</p>
+            <p className="text-slate-700 leading-relaxed text-xs break-words">{summary}</p>
           </section>
         )}
 
@@ -165,21 +165,21 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
             <div className="space-y-5">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-4 border-l-2" style={{ borderColor: accent }}>
-                  <div className="flex flex-row items-center justify-between">
-                    <div>
+                  <div className="flex flex-row items-baseline justify-between gap-3">
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-bold text-slate-900 text-xs">{exp.jobTitle}</h4>
                       <p className="text-slate-600 font-medium text-[11px]">
                         {exp.company} {exp.location && `• ${exp.location}`}
                       </p>
                     </div>
-                    <span className="text-[10px] font-semibold text-slate-400">
+                    <span className="text-[10px] font-semibold text-slate-400 shrink-0 text-right whitespace-nowrap">
                       {exp.startDate} – {exp.current ? "Present" : exp.endDate}
                     </span>
                   </div>
                   {exp.highlights && exp.highlights.length > 0 && (
-                    <ul className="list-disc list-outside ml-4 mt-2 space-y-1 text-slate-700 text-xs">
+                    <ul className="list-disc list-outside ml-4 mt-2 space-y-1 text-slate-700 text-xs break-words">
                       {exp.highlights.map((h, i) => (
-                        <li key={i}>{h}</li>
+                        <li key={i} className="break-words leading-relaxed">{h}</li>
                       ))}
                     </ul>
                   )}

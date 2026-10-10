@@ -79,7 +79,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm;
+    margin: 0 !important;
   }
 
   html,
@@ -89,6 +89,9 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
     height: auto !important;
     overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
@@ -103,7 +106,6 @@ body {
   .zoom-controls,
   .editor-sidebar,
   nav:not(#resume-document nav),
-  header.editor-header,
   header:not(#resume-document header),
   aside:not(#resume-document aside),
   footer:not(#resume-document footer),
@@ -113,34 +115,67 @@ body {
 
   .editor-preview-panel {
     display: block !important;
+    position: static !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
     overflow: visible !important;
     height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .resume-preview-wrapper,
+  .resume-scale-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    transform: none !important;
+    box-sizing: border-box !important;
   }
 
   #resume-document {
     display: block !important;
     box-shadow: none !important;
     border: none !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
     min-height: auto !important;
     transform: none !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
     page-break-after: avoid;
     break-inside: avoid;
   }
 
+  #resume-document > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
   #resume-document aside {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   #resume-document header {
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }

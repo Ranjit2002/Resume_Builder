@@ -26,18 +26,52 @@ export async function exportResumeToPdf(
     const canvas = await html2canvas(element, {
       scale: 2.5, // 2.5x high resolution for razor-sharp typography and icons
       useCORS: true,
-      allowTaint: true,
+      allowTaint: false, // Never taint canvas so toDataURL export always succeeds
       logging: false,
       backgroundColor: "#ffffff",
-      windowWidth: 1200, // Forces full desktop viewport evaluation in html2canvas iframe
+      windowWidth: 1200,
       windowHeight: 1600,
+      x: 0,
+      y: 0,
       width: A4_WIDTH_PX,
       scrollX: 0,
       scrollY: 0,
-      onclone: (clonedDoc) => {
+      onclone: async (clonedDoc) => {
         const clonedElement = clonedDoc.getElementById(elementId);
         if (clonedElement) {
+          // Inline external images to base64 via proxy to prevent any CORS issues
+          const images = Array.from(clonedElement.querySelectorAll<HTMLImageElement>("img"));
+          await Promise.all(
+            images.map(async (img) => {
+              try {
+                if (img.src && !img.src.startsWith("data:") && !img.src.startsWith("blob:")) {
+                  const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(img.src)}`;
+                  const res = await fetch(proxyUrl);
+                  if (res.ok) {
+                    const blob = await res.blob();
+                    const dataUrl = await new Promise<string>((resolve) => {
+                      const reader = new FileReader();
+                      reader.onloadend = () => resolve(reader.result as string);
+                      reader.readAsDataURL(blob);
+                    });
+                    img.src = dataUrl;
+                  }
+                }
+              } catch (e) {
+                console.warn("Could not inline image for PDF export:", e);
+              }
+            })
+          );
+
+          // Clear cloned body and place clonedElement directly at top-left (0, 0)
+          clonedDoc.body.innerHTML = "";
+          clonedDoc.body.style.margin = "0";
+          clonedDoc.body.style.padding = "0";
+          clonedDoc.body.style.backgroundColor = "#ffffff";
+          clonedDoc.body.appendChild(clonedElement);
+
           // Reset transform scale and remove UI shadows/borders for clean PDF print
+          clonedElement.style.position = "static";
           clonedElement.style.transform = "none";
           clonedElement.style.webkitTransform = "none";
           clonedElement.style.boxShadow = "none";
@@ -48,21 +82,6 @@ export async function exportResumeToPdf(
           clonedElement.style.width = `${A4_WIDTH_PX}px`;
           clonedElement.style.minWidth = `${A4_WIDTH_PX}px`;
           clonedElement.style.maxWidth = `${A4_WIDTH_PX}px`;
-
-          // Ensure all ancestor elements in cloned doc allow full width and visibility
-          let curr: HTMLElement | null = clonedElement.parentElement;
-          while (curr && curr !== clonedDoc.body) {
-            curr.style.display = "block";
-            curr.style.visibility = "visible";
-            curr.style.overflow = "visible";
-            curr.style.width = `${A4_WIDTH_PX}px`;
-            curr.style.minWidth = `${A4_WIDTH_PX}px`;
-            curr.style.maxWidth = "none";
-            curr.style.margin = "0";
-            curr.style.padding = "0";
-            curr.style.transform = "none";
-            curr = curr.parentElement;
-          }
         }
       },
     });
