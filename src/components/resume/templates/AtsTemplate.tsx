@@ -13,7 +13,7 @@ export function AtsTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#111827";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-10 box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-full p-10 box-border">
       {/* ATS Header: Simple, Centered or Left, Plain Contact Text */}
       <header className="border-b border-slate-300 pb-4 mb-6">
         <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-900">
@@ -34,7 +34,7 @@ export function AtsTemplate({ data }: TemplateProps) {
         </div>
       </header>
 
-      <div className="space-y-5">
+      <div>
         {/* Professional Summary */}
         {summary && !settings.hiddenSections?.includes("summary") && (
           <section>

@@ -15,7 +15,7 @@ export function ExecutiveTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#0f172a";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-10 shadow-sm border border-slate-200 box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-full p-10 shadow-sm border border-slate-200 box-border">
       {/* Executive Header */}
       <header className="border-b-2 pb-6 mb-6" style={{ borderColor: accent }}>
         <div className="text-center max-w-xl mx-auto space-y-2">
@@ -36,7 +36,7 @@ export function ExecutiveTemplate({ data }: TemplateProps) {
         </div>
       </header>
 
-      <div className="space-y-6">
+      <div>
         {/* Executive Profile */}
         {summary && !settings.hiddenSections?.includes("summary") && (
           <section>

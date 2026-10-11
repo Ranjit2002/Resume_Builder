@@ -17,6 +17,7 @@ import {
   UserCheck,
   Sun,
   Moon,
+  Home,
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
@@ -73,7 +74,7 @@ export function DashboardNav() {
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex">
-          <div className="w-72 bg-white dark:bg-slate-900 h-full p-5 flex flex-col justify-between shadow-xl border-r border-slate-200 dark:border-slate-800">
+          <div className="w-72 max-w-[85vw] bg-white dark:bg-slate-900 h-full p-5 flex flex-col justify-between overflow-y-auto shadow-xl border-r border-slate-200 dark:border-slate-800">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <Link href="/dashboard" className="flex items-center gap-2">
@@ -116,7 +117,7 @@ export function DashboardNav() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3 shrink-0">
               <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
@@ -133,14 +134,30 @@ export function DashboardNav() {
                 </div>
                 <ThemeToggle variant="pill" size="sm" />
               </div>
-              <Link href="/dashboard/resumes/new" onClick={() => setMobileOpen(false)}>
-                <Button variant="primary" className="w-full justify-center" size="sm">
-                  <Plus className="w-4 h-4 mr-1" /> New Resume
-                </Button>
-              </Link>
-              <Link href="/" className="block text-center text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
-                Back to Homepage
-              </Link>
+
+              <div className="flex flex-col gap-2.5">
+                <Link href="/dashboard/resumes/new" onClick={() => setMobileOpen(false)} className="block w-full">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    className="w-full justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-indigo-500/20 font-semibold"
+                    leftIcon={<Plus className="w-4 h-4 shrink-0" />}
+                  >
+                    New Resume
+                  </Button>
+                </Link>
+
+                <Link href="/" onClick={() => setMobileOpen(false)} className="block w-full">
+                  <Button
+                    variant="outline"
+                    size="md"
+                    className="w-full justify-center gap-2 font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 shadow-2xs transition-colors"
+                    leftIcon={<Home className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />}
+                  >
+                    Back to Homepage
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
           <div className="flex-1" onClick={() => setMobileOpen(false)} />
@@ -172,10 +189,10 @@ export function DashboardNav() {
             <Button
               variant="primary"
               size="sm"
-              className="w-full justify-start gap-2 shadow-xs"
-              leftIcon={<Plus className="w-4 h-4" />}
+              className="w-full justify-start gap-2 shadow-xs font-semibold"
+              leftIcon={<Plus className="w-4 h-4 shrink-0" />}
             >
-              Create Resume
+              New Resume
             </Button>
           </Link>
           <Link href="/dashboard/portfolios/new" className="block">
@@ -264,12 +281,13 @@ export function DashboardNav() {
             </Badge>
           </div>
 
-          <div className="flex items-center justify-between px-1 text-xs text-slate-500">
-            <Link href="/" className="hover:text-indigo-600 transition-colors">
-              Public Site
+          <div className="flex items-center justify-between px-1 text-xs text-slate-500 dark:text-slate-400">
+            <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-medium" title="Return to CareerCraft Homepage">
+              <Home className="w-3.5 h-3.5 shrink-0" />
+              <span>Back to Homepage</span>
             </Link>
-            <Link href="/login" className="hover:text-rose-600 transition-colors flex items-center gap-1">
-              <LogOut className="w-3.5 h-3.5" />
+            <Link href="/login" className="hover:text-rose-600 dark:hover:text-rose-400 transition-colors flex items-center gap-1 font-medium">
+              <LogOut className="w-3.5 h-3.5 shrink-0" />
               <span>Sign Out</span>
             </Link>
           </div>

@@ -30,9 +30,9 @@ export function ResumeTemplateDispatcher({ data, scale = 1 }: DispatcherProps) {
   }[fontFamily];
 
   const spacingClass = {
-    compact: "[&_section]:mb-3 [&_ul]:space-y-0.5 leading-tight",
-    normal: "[&_section]:mb-5 [&_ul]:space-y-1 leading-normal",
-    relaxed: "[&_section]:mb-7 [&_ul]:space-y-2 leading-relaxed",
+    compact: "[&_section:not(:last-child)]:mb-2.5 [&_section:last-child]:mb-0 [&_ul]:space-y-0.5 leading-tight",
+    normal: "[&_section:not(:last-child)]:mb-4 [&_section:last-child]:mb-0 [&_ul]:space-y-1 leading-normal",
+    relaxed: "[&_section:not(:last-child)]:mb-6 [&_section:last-child]:mb-0 [&_ul]:space-y-1.5 leading-relaxed",
   }[spacing];
 
   const renderSelectedTemplate = () => {

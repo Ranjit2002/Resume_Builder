@@ -15,7 +15,7 @@ export function ClassicTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#1e293b";
 
   return (
-    <div className="bg-white text-slate-900 p-10 font-serif text-sm leading-relaxed w-full min-h-[1123px] box-border">
+    <div className="bg-white text-slate-900 p-10 font-serif text-sm leading-relaxed w-full min-h-full box-border">
       {/* Header */}
       <header className="border-b-2 pb-6 text-center" style={{ borderColor: accent }}>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 uppercase">
@@ -69,7 +69,7 @@ export function ClassicTemplate({ data }: TemplateProps) {
       </header>
 
       {/* Main Content */}
-      <div className="mt-6 space-y-6">
+      <div className="mt-5">
         {/* Professional Summary */}
         {summary && !settings.hiddenSections?.includes("summary") && (
           <section>

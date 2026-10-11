@@ -15,7 +15,7 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#2563eb";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-9 shadow-sm box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-full p-9 shadow-sm box-border">
       {/* Header with vibrant accent banner underline */}
       <header className="pb-5 border-b-2" style={{ borderColor: accent }}>
         <div className="flex flex-row items-center justify-between gap-4">
@@ -38,7 +38,7 @@ export function StudentFresherTemplate({ data }: TemplateProps) {
         </div>
       </header>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-5">
         {/* Career Objective */}
         {summary && !settings.hiddenSections?.includes("summary") && (
           <section>

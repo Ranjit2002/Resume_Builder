@@ -11,9 +11,9 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#4f46e5";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs w-full max-w-full min-h-[1123px] flex flex-row box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs w-full max-w-full min-h-full flex flex-row box-border">
       {/* Left Sidebar Accent Rail */}
-      <aside className="w-64 bg-slate-50 border-r border-slate-200/80 p-6 shrink-0 flex flex-col justify-between box-border">
+      <aside className="w-64 bg-slate-50 border-r border-slate-200/80 p-6 shrink-0 flex flex-col justify-start box-border">
         <div className="space-y-6">
           {/* Avatar / Photo if enabled */}
           {settings.showPhoto && personalInfo.photoUrl && (
@@ -134,9 +134,9 @@ export function ModernMinimalTemplate({ data }: TemplateProps) {
       </aside>
 
       {/* Right Column / Body */}
-      <main className="flex-1 p-6 space-y-6 min-w-0 box-border">
+      <main className="flex-1 p-6 min-w-0 box-border">
         {/* Name and Title */}
-        <header className="border-b border-slate-100 pb-5">
+        <header className="border-b border-slate-100 pb-4 mb-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
             {personalInfo.fullName || "Your Full Name"}
           </h1>

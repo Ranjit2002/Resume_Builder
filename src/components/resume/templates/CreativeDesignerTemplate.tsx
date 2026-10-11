@@ -15,7 +15,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#e11d48";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-10 shadow-sm relative overflow-hidden box-border">
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-full p-10 shadow-sm relative overflow-hidden box-border">
       {/* Decorative top accent element */}
       <div
         className="absolute top-0 right-0 w-48 h-48 -mr-16 -mt-16 rounded-full opacity-10 pointer-events-none"
@@ -53,7 +53,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
       {/* Two Column Layout */}
       <div className="grid grid-cols-3 gap-8">
         {/* Left Column (2/3 width) */}
-        <div className="col-span-2 space-y-6">
+        <div className="col-span-2">
           {/* Summary */}
           {summary && !settings.hiddenSections?.includes("summary") && (
             <section>
@@ -133,7 +133,7 @@ export function CreativeDesignerTemplate({ data }: TemplateProps) {
         </div>
 
         {/* Right Column (1/3 width) */}
-        <div className="space-y-6">
+        <div>
           {/* Design Tooling & Skills */}
           {skillCategories && skillCategories.length > 0 && !settings.hiddenSections?.includes("skills") && (
             <section>

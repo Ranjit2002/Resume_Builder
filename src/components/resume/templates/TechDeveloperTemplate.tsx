@@ -15,7 +15,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
   const accent = settings.accentColor || "#0284c7";
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-[1123px] p-9 shadow-sm border-t-8 box-border" style={{ borderTopColor: accent }}>
+    <div className="bg-white text-slate-900 font-sans text-xs leading-relaxed w-full min-h-full p-9 shadow-sm border-t-8 box-border" style={{ borderTopColor: accent }}>
       {/* Dev Header */}
       <header className="border-b border-slate-200 pb-5 mb-5">
         <div className="flex flex-row items-center justify-between gap-3">
@@ -63,7 +63,7 @@ export function TechDeveloperTemplate({ data }: TemplateProps) {
         </div>
       </header>
 
-      <div className="space-y-5">
+      <div>
         {/* Summary */}
         {summary && !settings.hiddenSections?.includes("summary") && (
           <section>
