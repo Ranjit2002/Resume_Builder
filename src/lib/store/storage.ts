@@ -483,9 +483,30 @@ export function getUserProfile(): UserProfile {
   return getLocalItem<UserProfile>(USER_PROFILE_KEY, DEFAULT_USER_PROFILE);
 }
 
+export function isUserPro(profile?: UserProfile): boolean {
+  const p = profile || getUserProfile();
+  return Boolean(
+    p?.subscription?.plan === "pro" &&
+    p?.subscription?.status === "active"
+  );
+}
+
 export function saveUserProfile(profile: Partial<UserProfile>): UserProfile {
   const current = getUserProfile();
-  const updated = { ...current, ...profile };
+  const updated = {
+    ...current,
+    ...profile,
+    subscription: profile.subscription
+      ? { ...current.subscription, ...profile.subscription }
+      : current.subscription,
+  };
   setLocalItem(USER_PROFILE_KEY, updated);
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("careercraft_user_updated", { detail: updated })
+    );
+  }
+
   return updated;
 }

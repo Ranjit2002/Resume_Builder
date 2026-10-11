@@ -47,6 +47,12 @@ export function ResumeCustomizationForm({
   const [searchQuery, setSearchQuery] = useState("");
 
   const selectTemplate = (id: ResumeTemplateId, isPro?: boolean) => {
+    if (isPro && userPlan !== "pro") {
+      if (onUpgradePrompt) {
+        onUpgradePrompt();
+      }
+      return;
+    }
     onChange({ ...settings, template: id });
   };
 

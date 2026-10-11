@@ -81,6 +81,7 @@ export default function PricingPage() {
 
               {plan.id === "pro" ? (
                 <Button
+                  id="upgrade-to-pro-btn"
                   variant="primary"
                   size="lg"
                   className="w-full justify-center shadow-lg shadow-indigo-500/25"

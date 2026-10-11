@@ -47,6 +47,13 @@ export default function DashboardOverviewPage() {
 
   useEffect(() => {
     loadData();
+    const sync = () => setProfile(getUserProfile());
+    window.addEventListener("careercraft_user_updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("careercraft_user_updated", sync);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
 
   const loadData = async () => {

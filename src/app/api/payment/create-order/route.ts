@@ -1,62 +1,91 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  getRazorpayClient,
+  getRazorpayKeyId,
+  isRazorpayConfigured,
+} from "@/lib/razorpay";
+
+interface CreateOrderRequestBody {
+  planId?: string;
+  amount?: number | string;
+  currency?: string;
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const { planId, amount } = await req.json();
-
-    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
-
-    // Check if real keys are configured
-    const isConfigured = Boolean(
-      keyId &&
-      keySecret &&
-      keyId !== "rzp_test_yourkeyid" &&
-      keySecret !== "your_razorpay_secret"
-    );
-
-    if (!isConfigured) {
-      return NextResponse.json({
-        isConfigured: false,
-        message:
-          "Razorpay test keys are not configured in your .env.local file (NEXT_PUBLIC_RAZORPAY_KEY_ID & RAZORPAY_KEY_SECRET). You can test Pro features using Sandbox Demo mode.",
-      });
+    if (!isRazorpayConfigured()) {
+      return NextResponse.json(
+        {
+          success: false,
+          isConfigured: false,
+          message:
+            "Razorpay credentials are not configured on the server. Please check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in your environment variables.",
+        },
+        { status: 500 }
+      );
     }
 
-    // Call Razorpay API to create an order
-    const authHeader = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
-    const response = await fetch("https://api.razorpay.com/v1/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${authHeader}`,
-      },
-      body: JSON.stringify({
-        amount: (amount || 12) * 100, // In cents or paisa
-        currency: "USD",
-        receipt: `rcpt_${Date.now()}`,
-      }),
-    });
+    let body: CreateOrderRequestBody = {};
+    try {
+      body = (await req.json()) as CreateOrderRequestBody;
+    } catch {
+      // Body may be empty or invalid JSON; fallback to defaults
+    }
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    const { planId = "pro", amount = 12, currency = "USD" } = body || {};
+
+    const numericAmount =
+      typeof amount === "number" ? amount : parseFloat(String(amount));
+    if (isNaN(numericAmount) || numericAmount <= 0) {
       return NextResponse.json(
-        { isConfigured: false, message: errorData.error?.description || "Order creation failed" },
+        {
+          success: false,
+          isConfigured: true,
+          message: "Invalid payment amount specified.",
+        },
         { status: 400 }
       );
     }
 
-    const orderData = await response.json();
-    return NextResponse.json({
-      isConfigured: true,
-      orderId: orderData.id,
-      amount: orderData.amount,
-      currency: orderData.currency,
+    // Amount in smallest currency subunit (cents for USD, paise for INR)
+    const amountInSubunits = Math.round(numericAmount * 100);
+
+    const razorpay = getRazorpayClient();
+    const order = await razorpay.orders.create({
+      amount: amountInSubunits,
+      currency: currency || "USD",
+      receipt: `rcpt_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      notes: {
+        planId: planId || "pro",
+      },
     });
-  } catch (err: any) {
+
+    return NextResponse.json({
+      success: true,
+      isConfigured: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      keyId: getRazorpayKeyId(),
+    });
+  } catch (err: unknown) {
+    console.error("Error creating Razorpay order:", err);
+    const errorObj = err as {
+      error?: { description?: string };
+      message?: string;
+    };
+    const errorMessage =
+      errorObj?.error?.description ||
+      errorObj?.message ||
+      "Order creation failed on Razorpay.";
+
     return NextResponse.json(
-      { error: err.message || "Internal server error" },
-      { status: 500 }
+      {
+        success: false,
+        isConfigured: true,
+        message: errorMessage,
+      },
+      { status: 400 }
     );
   }
 }

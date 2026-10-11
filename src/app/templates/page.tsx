@@ -17,7 +17,7 @@ import {
 import { getSampleResumeForTemplate } from "@/lib/constants/sample-resumes";
 import { ResumeTemplateDispatcher } from "@/components/resume/templates/ResumeTemplateDispatcher";
 import { UpgradeModal } from "@/components/payment/UpgradeModal";
-import { getUserProfile } from "@/lib/store/storage";
+import { getUserProfile, isUserPro } from "@/lib/store/storage";
 import {
   FileText,
   Globe,
@@ -42,8 +42,23 @@ export default function TemplatesPage() {
   const [userPlan, setUserPlan] = useState<string>("free");
 
   useEffect(() => {
-    const profile = getUserProfile();
-    setUserPlan(profile.subscription?.plan || "free");
+    const sync = () => {
+      const profile = getUserProfile();
+      setUserPlan(isUserPro(profile) ? "pro" : "free");
+    };
+    sync();
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("careercraft_user_updated", sync);
+      window.addEventListener("storage", sync);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("careercraft_user_updated", sync);
+        window.removeEventListener("storage", sync);
+      }
+    };
   }, []);
 
   const categories: { id: string; label: string }[] = [

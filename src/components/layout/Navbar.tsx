@@ -43,7 +43,7 @@ export function Navbar() {
                 Career<span className="text-indigo-600 dark:text-indigo-400">Craft</span>
               </span>
               <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 tracking-wider uppercase -mt-1">
-                Resume & Portfolio SaaS
+                WORKSHOP
               </span>
             </div>
           </Link>

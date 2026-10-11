@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
-import { getResumeById, getUserProfile, DEFAULT_USER_PROFILE } from "@/lib/store/storage";
+import { getResumeById, getUserProfile, DEFAULT_USER_PROFILE, isUserPro } from "@/lib/store/storage";
 import { ResumeData } from "@/lib/types/resume";
 import { UserProfile } from "@/lib/types/subscription";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
@@ -61,7 +61,7 @@ function ResumeEditorInner() {
   return (
     <ResumeEditor
       initialResume={resume}
-      userPlan={profile.subscription?.plan || "free"}
+      userPlan={isUserPro(profile) ? "pro" : "free"}
     />
   );
 }
