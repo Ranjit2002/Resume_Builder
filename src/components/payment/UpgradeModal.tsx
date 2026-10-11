@@ -385,30 +385,30 @@ export function UpgradeModal({
       description={`Upgrade your account to access ${featureName} and unlock all professional resume templates.`}
       maxWidth="lg"
     >
-      <div className="space-y-6 pt-2">
+      <div className="space-y-4 sm:space-y-6 pt-1 sm:pt-2">
         {/* Pro Plan Card */}
-        <div className="p-5 rounded-2xl border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white dark:from-indigo-950/40 dark:to-slate-900 relative shadow-sm">
+        <div className="p-3.5 sm:p-5 rounded-2xl border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/50 to-white dark:from-indigo-950/40 dark:to-slate-900 relative shadow-sm">
           {/* Currency Toggle */}
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-indigo-100 dark:border-indigo-900/50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4 pb-3 border-b border-indigo-100 dark:border-indigo-900/50">
             <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
               Select Currency:
             </span>
-            <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-medium">
+            <div className="grid grid-cols-2 sm:inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-medium w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setCurrency("INR")}
-                className={`px-3 py-1 rounded-md transition-all ${
+                className={`px-2 sm:px-3 py-1.5 rounded-md transition-all text-center ${
                   currency === "INR"
                     ? "bg-indigo-600 text-white font-bold shadow-sm"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
-                ₹ INR (UPI / EMI / Cards)
+                ₹ INR (UPI / Cards)
               </button>
               <button
                 type="button"
                 onClick={() => setCurrency("USD")}
-                className={`px-3 py-1 rounded-md transition-all ${
+                className={`px-2 sm:px-3 py-1.5 rounded-md transition-all text-center ${
                   currency === "USD"
                     ? "bg-indigo-600 text-white font-bold shadow-sm"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -421,15 +421,15 @@ export function UpgradeModal({
 
           <div className="flex items-center justify-between mb-3">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
                 Full Career Acceleration
               </span>
-              <h4 className="text-xl font-black text-slate-900 dark:text-white">
+              <h4 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
                 {proPlan.name}
               </h4>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-black text-slate-900 dark:text-white">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
                 {currencySymbol}{price}
               </span>
               <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
@@ -439,11 +439,11 @@ export function UpgradeModal({
             </div>
           </div>
 
-          <p className="text-xs text-slate-600 dark:text-slate-300 mb-4">
+          <p className="text-xs text-slate-600 dark:text-slate-300 mb-3 sm:mb-4">
             {proPlan.tagline}
           </p>
 
-          <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300 mb-5">
+          <ul className="space-y-1.5 sm:space-y-2 text-xs text-slate-700 dark:text-slate-300 mb-4 sm:mb-5">
             {proPlan.features.map((f, i) => (
               <li key={i} className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -453,18 +453,18 @@ export function UpgradeModal({
           </ul>
 
           {/* Supported Payment Badges */}
-          <div className="mb-5 p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-800 flex flex-wrap items-center justify-center gap-3 text-[11px] text-slate-600 dark:text-slate-400">
+          <div className="mb-4 sm:mb-5 p-2 sm:p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-800 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-400">
             <span className="flex items-center gap-1 font-medium">
-              <QrCode className="w-3.5 h-3.5 text-indigo-500" /> UPI / QR
+              <QrCode className="w-3.5 h-3.5 text-indigo-500 shrink-0" /> UPI / QR
             </span>
             <span className="flex items-center gap-1 font-medium">
-              <CreditCard className="w-3.5 h-3.5 text-indigo-500" /> Debit & Credit Cards
+              <CreditCard className="w-3.5 h-3.5 text-indigo-500 shrink-0" /> Debit & Credit Cards
             </span>
             <span className="flex items-center gap-1 font-medium">
-              <Wallet className="w-3.5 h-3.5 text-indigo-500" /> Wallets
+              <Wallet className="w-3.5 h-3.5 text-indigo-500 shrink-0" /> Wallets
             </span>
             <span className="flex items-center gap-1 font-medium">
-              <Landmark className="w-3.5 h-3.5 text-indigo-500" /> EMI & Netbanking
+              <Landmark className="w-3.5 h-3.5 text-indigo-500 shrink-0" /> EMI & Netbanking
             </span>
           </div>
 
@@ -505,29 +505,37 @@ export function UpgradeModal({
               id="razorpay-subscribe-btn"
               type="button"
               variant={isPaymentSuccess ? "secondary" : "primary"}
-              size="lg"
-              className="w-full justify-center text-sm shadow-md shadow-indigo-500/25"
+              className="w-full justify-center px-3 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/25 whitespace-normal transition-all"
               isLoading={isLoading || isVerifying}
               disabled={isLoading || isVerifying || isPaymentSuccess}
               onClick={handleCheckout}
               leftIcon={
                 isPaymentSuccess ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 ) : (
-                  <CreditCard className="w-4 h-4" />
+                  <CreditCard className="w-4 h-4 shrink-0" />
                 )
               }
             >
-              {isPaymentSuccess
-                ? "Pro Activated!"
-                : isVerifying
-                ? "Verifying Payment..."
-                : isLoading
-                ? "Opening Razorpay..."
-                : `Subscribe with Razorpay (${currencySymbol}${price})`}
+              <span className="flex items-center justify-center gap-1.5 flex-wrap text-center">
+                {isPaymentSuccess ? (
+                  "Pro Activated!"
+                ) : isVerifying ? (
+                  "Verifying Payment..."
+                ) : isLoading ? (
+                  "Opening Razorpay..."
+                ) : (
+                  <>
+                    <span>Subscribe with Razorpay</span>
+                    <span className="font-extrabold whitespace-nowrap">
+                      ({currencySymbol}{price})
+                    </span>
+                  </>
+                )}
+              </span>
             </Button>
             <p className="text-center text-[10px] text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
               Cancel anytime. 100% secure Razorpay Standard Checkout.
             </p>
           </div>
