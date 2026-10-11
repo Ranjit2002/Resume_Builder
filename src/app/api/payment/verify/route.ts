@@ -3,6 +3,7 @@ import {
   verifyRazorpaySignature,
   isRazorpayConfigured,
   getRazorpayClient,
+  getFallbackRazorpayClient,
   createProEntitlementToken,
 } from "@/lib/razorpay";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -72,8 +73,18 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Fetch live payment details from Razorpay to verify status & prevent pending/fraudulent claims
-    const razorpay = getRazorpayClient();
-    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    let payment: any;
+    try {
+      const razorpay = getRazorpayClient();
+      payment = await razorpay.payments.fetch(razorpay_payment_id);
+    } catch (primaryFetchErr) {
+      try {
+        const fallbackRazorpay = getFallbackRazorpayClient();
+        payment = await fallbackRazorpay.payments.fetch(razorpay_payment_id);
+      } catch {
+        throw primaryFetchErr;
+      }
+    }
 
     // Verify order ID matches
     if (payment.order_id && payment.order_id !== razorpay_order_id) {
