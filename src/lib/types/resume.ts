@@ -1,11 +1,47 @@
 export type ResumeTemplateId =
+  // Category A: Students and Early Careers (All Free)
+  | "student"
+  | "fresher"
+  | "internship"
+  | "graduate"
+  | "career-change"
+  // Category B: Business and Management (2 Paid, 3 Free)
+  | "business-analyst"
+  | "project-manager" // Paid
+  | "product-manager" // Paid
+  | "business-development"
+  | "operations-manager"
+  // Category C: Marketing and Creative Careers (2 Paid, 3 Free)
+  | "digital-marketing" // Paid
+  | "social-media-manager"
+  | "sales-executive"
+  | "ui-ux-designer" // Paid
+  | "graphic-designer"
+  // Category D: Data, AI, and Technical Careers (2 Paid, 3 Free)
+  | "data-analyst"
+  | "data-scientist" // Paid
+  | "ai-ml-engineer" // Paid
+  | "cybersecurity-analyst"
+  | "it-support"
+  // Category E: Finance and Professional Services (2 Paid, 3 Free)
+  | "accountant"
+  | "financial-analyst" // Paid
+  | "human-resources" // Paid
+  | "customer-service"
+  | "content-writer"
+  // Category F: Other Important Professional Careers (2 Paid, 3 Free)
+  | "healthcare-professional" // Paid
+  | "teacher"
+  | "mechanical-engineer"
+  | "hr-recruiter"
+  | "executive" // Paid
+  // Backwards-compatibility legacy aliases
   | "classic"
   | "modern"
-  | "student"
   | "tech"
   | "creative"
-  | "executive"
   | "ats";
+
 
 export interface PersonalInfo {
   fullName: string;

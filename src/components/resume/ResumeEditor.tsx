@@ -21,6 +21,7 @@ import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { ThemeToggle } from "../theme/ThemeToggle";
 import confetti from "canvas-confetti";
+import { isPaidTemplate, getTemplateMeta } from "@/lib/constants/templates";
 import {
   User,
   FileText,
@@ -238,6 +239,35 @@ export function ResumeEditor({
   };
 
   const handleExportPdf = async () => {
+    // 1. Verify eligibility for paid templates
+    const isPaid = isPaidTemplate(resume.settings?.template);
+    if (isPaid && userPlan !== "pro") {
+      const meta = getTemplateMeta(resume.settings.template);
+      setUpgradeFeature(`${meta.name} (Premium Template)`);
+      setUpgradeModalOpen(true);
+      return;
+    }
+
+    // 2. Server-side verification check
+    try {
+      const checkRes = await fetch("/api/resumes/export-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          templateId: resume.settings?.template,
+          userPlan,
+        }),
+      });
+      const checkData = await checkRes.json();
+      if (!checkData.allowed) {
+        setUpgradeFeature(`${checkData.templateName || "Premium Template"}`);
+        setUpgradeModalOpen(true);
+        return;
+      }
+    } catch {
+      // In offline / network failure, client verification above protects export
+    }
+
     setIsExporting(true);
     setExportStatusText("Initializing PDF engine...");
 
@@ -621,7 +651,7 @@ export function ResumeEditor({
                   transformOrigin: "top left",
                 }}
               >
-                <ResumeTemplateDispatcher data={resume} scale={1} />
+                <ResumeTemplateDispatcher data={resume} scale={1} userPlan={userPlan} />
               </div>
             </div>
           </div>
