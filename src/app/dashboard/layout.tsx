@@ -13,7 +13,7 @@ export default function DashboardLayout({
       <Suspense fallback={<div className="w-64 bg-white dark:bg-slate-900 min-h-screen border-r border-slate-200 dark:border-slate-800" />}>
         <DashboardNav />
       </Suspense>
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 max-w-full overflow-x-hidden overflow-y-auto">
         <Suspense fallback={<div className="p-8 text-center text-slate-500 dark:text-slate-400">Loading workspace...</div>}>
           {children}
         </Suspense>

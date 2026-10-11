@@ -90,9 +90,9 @@ function CreatePortfolioContent() {
   };
 
   return (
-    <div className="p-4 sm:p-8 max-w-4xl mx-auto w-full space-y-8">
+    <div className="p-3.5 sm:p-6 md:p-8 max-w-4xl mx-auto w-full min-w-0 max-w-full space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
           Create Personal Portfolio
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -100,7 +100,7 @@ function CreatePortfolioContent() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-5 sm:space-y-6 w-full min-w-0 max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Portfolio Website Title"
@@ -185,8 +185,8 @@ function CreatePortfolioContent() {
           />
         </div>
 
-        <div className="flex justify-end gap-3 pt-3">
-          <Button variant="outline" size="md" onClick={() => router.back()}>
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3">
+          <Button variant="outline" size="md" onClick={() => router.back()} className="w-full sm:w-auto justify-center">
             Cancel
           </Button>
           <Button
@@ -195,6 +195,7 @@ function CreatePortfolioContent() {
             isLoading={isCreating}
             onClick={handleCreate}
             rightIcon={<ArrowRight className="w-4 h-4" />}
+            className="w-full sm:w-auto justify-center shadow-md shadow-indigo-500/20 text-xs sm:text-sm"
           >
             Create & Open Portfolio Editor
           </Button>

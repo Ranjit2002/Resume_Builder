@@ -188,14 +188,14 @@ function CreateResumeContent() {
     RESUME_TEMPLATES[0];
 
   return (
-    <div className="p-4 sm:p-8 max-w-5xl mx-auto space-y-6">
+    <div className="p-3 sm:p-6 md:p-8 max-w-5xl mx-auto space-y-4 sm:space-y-6 w-full min-w-0 max-w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
             Create a New Resume
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1">
             Pick a specialized career template and begin editing immediately.
           </p>
         </div>
@@ -205,14 +205,14 @@ function CreateResumeContent() {
           isLoading={isCreating}
           onClick={handleCreate}
           rightIcon={<ArrowRight className="w-4 h-4" />}
-          className="shadow-md shadow-indigo-500/20"
+          className="w-full sm:w-auto justify-center shadow-md shadow-indigo-500/20 text-xs sm:text-sm"
         >
           Create Resume & Start Editing
         </Button>
       </div>
 
       {/* Main Settings Card */}
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 sm:space-y-6 w-full min-w-0 max-w-full">
         {/* Title Input */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
@@ -222,22 +222,22 @@ function CreateResumeContent() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Senior Software Engineer Resume"
-            className="max-w-md"
+            className="w-full max-w-md"
           />
         </div>
 
         {/* Populate with realistic sample data toggle */}
-        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 max-w-xl">
+        <div className="flex items-start sm:items-center gap-3 p-3 sm:p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 w-full max-w-xl">
           <input
             type="checkbox"
             id="populateSample"
             checked={populateSample}
             onChange={(e) => setPopulateSample(e.target.checked)}
-            className="w-4 h-4 text-indigo-600 rounded-md border-slate-300 focus:ring-indigo-500 cursor-pointer"
+            className="w-4 h-4 text-indigo-600 rounded-md border-slate-300 focus:ring-indigo-500 cursor-pointer mt-0.5 sm:mt-0 shrink-0"
           />
           <label
             htmlFor="populateSample"
-            className="text-xs text-slate-700 dark:text-slate-300 cursor-pointer select-none"
+            className="text-xs text-slate-700 dark:text-slate-300 cursor-pointer select-none leading-relaxed"
           >
             <strong className="text-indigo-900 dark:text-indigo-300 block font-bold">
               Pre-fill with role-specific sample data
@@ -247,8 +247,8 @@ function CreateResumeContent() {
         </div>
 
         {/* Template Selector */}
-        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="space-y-3 pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
               Choose Role-Specific Template ({RESUME_TEMPLATES.length} Available)
             </label>
@@ -273,13 +273,13 @@ function CreateResumeContent() {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+          <div className="w-full min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto pb-1.5 touch-pan-x">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-colors ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap shrink-0 transition-colors ${
                   selectedCategory === cat.id
                     ? "bg-indigo-600 text-white shadow-xs"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
@@ -291,7 +291,7 @@ function CreateResumeContent() {
           </div>
 
           {/* Templates Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 max-h-[460px] overflow-y-auto pr-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5 max-h-[460px] overflow-y-auto pr-1 w-full min-w-0">
             {filteredTemplates.map((tmpl) => {
               const isSelected = selectedTemplate === tmpl.id;
               const isProLocked = tmpl.isPro && userPlan !== "pro";
@@ -300,7 +300,7 @@ function CreateResumeContent() {
                 <div
                   key={tmpl.id}
                   onClick={() => handleSelectTemplate(tmpl.id)}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
+                  className={`p-3.5 sm:p-4 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between w-full min-w-0 ${
                     isSelected
                       ? "border-indigo-600 dark:border-indigo-500 bg-indigo-50/70 dark:bg-indigo-950/60 ring-2 ring-indigo-500/25"
                       : isProLocked
@@ -358,14 +358,14 @@ function CreateResumeContent() {
         </div>
 
         {/* Action Button */}
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <div className="pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end w-full">
           <Button
             variant="primary"
             size="lg"
             isLoading={isCreating}
             onClick={handleCreate}
             rightIcon={<ArrowRight className="w-4 h-4" />}
-            className="shadow-md shadow-indigo-500/20"
+            className="w-full sm:w-auto justify-center shadow-md shadow-indigo-500/20 text-xs sm:text-sm py-2.5 sm:py-3"
           >
             Create & Open Editor
           </Button>
