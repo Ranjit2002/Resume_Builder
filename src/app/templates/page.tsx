@@ -18,6 +18,7 @@ import { getSampleResumeForTemplate } from "@/lib/constants/sample-resumes";
 import { ResumeTemplateDispatcher } from "@/components/resume/templates/ResumeTemplateDispatcher";
 import { UpgradeModal } from "@/components/payment/UpgradeModal";
 import { getUserProfile, isUserPro } from "@/lib/store/storage";
+import { cn } from "@/lib/utils/cn";
 import {
   FileText,
   Globe,
@@ -29,6 +30,9 @@ import {
   CheckCircle2,
   X,
   Filter,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
 } from "lucide-react";
 
 export default function TemplatesPage() {
@@ -40,6 +44,42 @@ export default function TemplatesPage() {
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState("Premium Resume Template");
   const [userPlan, setUserPlan] = useState<string>("free");
+
+  // Template preview zoom and responsive fit states
+  const previewContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [zoomMode, setZoomMode] = useState<"fit" | "custom">("fit");
+  const [customZoom, setCustomZoom] = useState<number>(1);
+
+  // Measure container dimensions for responsive preview
+  useEffect(() => {
+    if (!previewTemplate) return;
+
+    setZoomMode("fit");
+
+    const updateContainerWidth = () => {
+      if (previewContainerRef.current) {
+        const clientW = previewContainerRef.current.clientWidth;
+        const padding = window.innerWidth < 640 ? 16 : 32;
+        const usable = Math.max(160, clientW - padding);
+        setContainerWidth(usable);
+      }
+    };
+
+    updateContainerWidth();
+    const rafId = requestAnimationFrame(updateContainerWidth);
+    const timer1 = setTimeout(updateContainerWidth, 60);
+    const timer2 = setTimeout(updateContainerWidth, 200);
+
+    window.addEventListener("resize", updateContainerWidth);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener("resize", updateContainerWidth);
+    };
+  }, [previewTemplate]);
 
   useEffect(() => {
     const sync = () => {
@@ -369,72 +409,178 @@ export default function TemplatesPage() {
       </main>
 
       {/* Interactive Modal Preview */}
-      {previewTemplate && (
-        <Modal
-          isOpen={Boolean(previewTemplate)}
-          onClose={() => setPreviewTemplate(null)}
-          title={`Template Preview: ${previewTemplate.name}`}
-          maxWidth="4xl"
-        >
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-sm text-slate-900 dark:text-white">
-                    {previewTemplate.name}
-                  </h4>
-                  {previewTemplate.isPro ? (
-                    <Badge variant="pro" size="sm">PREMIUM</Badge>
-                  ) : (
-                    <Badge variant="default" size="sm">FREE</Badge>
-                  )}
+      {previewTemplate && (() => {
+        const fitScale =
+          containerWidth > 0
+            ? Math.min(0.95, Math.max(0.2, containerWidth / 794))
+            : 0.85;
+        const currentScale = zoomMode === "fit" ? fitScale : customZoom;
+
+        return (
+          <Modal
+            isOpen={Boolean(previewTemplate)}
+            onClose={() => setPreviewTemplate(null)}
+            title={`Template Preview: ${previewTemplate.name}`}
+            maxWidth="4xl"
+          >
+            <div className="space-y-3.5">
+              {/* Header Box: Fully responsive on mobile, tablet and desktop */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 bg-slate-100 dark:bg-slate-800/90 rounded-2xl w-full min-w-0 border border-slate-200/60 dark:border-slate-700/60">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white truncate">
+                      {previewTemplate.name}
+                    </h4>
+                    {previewTemplate.isPro ? (
+                      <Badge variant="pro" size="sm">PREMIUM</Badge>
+                    ) : (
+                      <Badge variant="default" size="sm">FREE</Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 truncate">
+                    Role: {previewTemplate.role} • Category: {previewTemplate.category}
+                  </p>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
-                  Role: {previewTemplate.role} • Category: {previewTemplate.category}
-                </p>
+
+                <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto justify-center text-xs sm:text-sm px-2.5 sm:px-3 py-2 h-9"
+                    onClick={() => setPreviewTemplate(null)}
+                  >
+                    Close Preview
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="w-full sm:w-auto justify-center text-xs sm:text-sm px-2.5 sm:px-3 py-2 h-9"
+                    onClick={() => {
+                      const t = previewTemplate;
+                      setPreviewTemplate(null);
+                      handleUseTemplate(t);
+                    }}
+                    rightIcon={<ArrowRight className="w-3.5 h-3.5 shrink-0" />}
+                  >
+                    <span className="hidden sm:inline">Customize Template</span>
+                    <span className="sm:hidden inline">Customize</span>
+                  </Button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPreviewTemplate(null)}
-                >
-                  Close Preview
-                </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => {
-                    const t = previewTemplate;
-                    setPreviewTemplate(null);
-                    handleUseTemplate(t);
-                  }}
-                  rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-                >
-                  Customize This Template
-                </Button>
-              </div>
-            </div>
+              {/* View & Zoom Controls: Switch between Full-Fit View and Detailed Zoom */}
+              <div className="flex items-center justify-between gap-2 px-1 text-xs text-slate-600 dark:text-slate-400">
+                <div className="flex items-center gap-1.5 font-medium min-w-0">
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="truncate">
+                    {zoomMode === "fit" ? "Whole Resume View (Fit)" : `${Math.round(currentScale * 100)}% Zoom`}
+                  </span>
+                </div>
 
-            {/* Document Render Area (Scaled to fit neatly in modal) */}
-            <div className="bg-slate-200/80 dark:bg-slate-950 p-4 rounded-2xl flex justify-center overflow-auto max-h-[70vh]">
+                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/70 dark:border-slate-700/70 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setZoomMode("fit")}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1",
+                      zoomMode === "fit"
+                        ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    )}
+                    title="Fit whole resume to screen width"
+                  >
+                    <Maximize2 className="w-3 h-3" />
+                    <span>Fit Screen</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setZoomMode("custom");
+                      setCustomZoom(1.0);
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1",
+                      zoomMode === "custom" && customZoom === 1.0
+                        ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    )}
+                    title="View at 100% actual size"
+                  >
+                    <ZoomIn className="w-3 h-3" />
+                    <span>100%</span>
+                  </button>
+                  <div className="h-3.5 w-px bg-slate-300 dark:bg-slate-700 mx-0.5" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setZoomMode("custom");
+                      setCustomZoom(Math.max(0.25, Number((currentScale - 0.15).toFixed(2))));
+                    }}
+                    className="p-1 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                    title="Zoom Out"
+                    aria-label="Zoom Out"
+                  >
+                    <ZoomOut className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setZoomMode("custom");
+                      setCustomZoom(Math.min(1.5, Number((currentScale + 0.15).toFixed(2))));
+                    }}
+                    className="p-1 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                    title="Zoom In"
+                    aria-label="Zoom In"
+                  >
+                    <ZoomIn className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Document Render Area (Proportionally scaled to show whole resume) */}
               <div
-                style={{
-                  transform: "scale(0.85)",
-                  transformOrigin: "top center",
-                }}
+                ref={previewContainerRef}
+                className="bg-slate-200/80 dark:bg-slate-950 p-2 sm:p-4 rounded-2xl flex justify-center items-start overflow-auto max-h-[62vh] sm:max-h-[70vh] touch-pan-x touch-pan-y"
               >
-                <ResumeTemplateDispatcher
-                  data={getSampleResumeForTemplate(previewTemplate.id)}
-                  scale={1}
-                  userPlan={userPlan}
-                />
+                <div
+                  style={{
+                    width: `${Math.round(794 * currentScale)}px`,
+                    height: `${Math.round(1123 * currentScale)}px`,
+                    position: "relative",
+                    flexShrink: 0,
+                    margin: "0 auto",
+                    transition: "width 0.15s ease-out, height 0.15s ease-out",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "794px",
+                      minHeight: "1123px",
+                      transform: `scale(${currentScale})`,
+                      transformOrigin: "top left",
+                      transition: "transform 0.15s ease-out",
+                    }}
+                  >
+                    <ResumeTemplateDispatcher
+                      data={getSampleResumeForTemplate(previewTemplate.id)}
+                      scale={1}
+                      userPlan={userPlan}
+                    />
+                  </div>
+                </div>
               </div>
+
+              {/* Mobile Tip */}
+              <p className="text-center text-[11px] text-slate-500 dark:text-slate-400 sm:hidden">
+                💡 Tip: Tap <span className="font-semibold text-slate-700 dark:text-slate-300">100%</span> to read up close, or <span className="font-semibold text-slate-700 dark:text-slate-300">Fit Screen</span> to see the full page.
+              </p>
             </div>
-          </div>
-        </Modal>
-      )}
+          </Modal>
+        );
+      })()}
 
       {/* Upgrade / Payment Modal */}
       <UpgradeModal
